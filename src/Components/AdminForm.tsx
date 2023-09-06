@@ -1,36 +1,48 @@
 import { auth } from "../config/firebase.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
-export const AdminForm = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<boolean>(false);
-  const [success, setSuccess] = useState<boolean>(false);
+import { useAdminForm } from "../hooks/useAdminForm.js";
 
-  const handleAdminLogin = () => {
+export const AdminForm = () => {
+  const {
+    email,
+    password,
+    error,
+    success,
+    navigate,
+    handleEmailChange,
+    handlePasswordChange,
+    handleError,
+    handleSuccess,
+  } = useAdminForm();
+
+  const handleAdminLogin = (e:React.FormEvent) => {
+    e.preventDefault()
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-        setSuccess(true);
+        handleSuccess(true);
         setTimeout(() => {
-          setSuccess(false);
-        }, 1000);
+          navigate("/home");
+          handleSuccess(false);
+        }, 250);
       })
       .catch(() => {
-        setError(true);
+        handleError(true);
         setTimeout(() => {
-          setError(false);
+          handleError(false);
         }, 1000);
       });
   };
 
   return (
-    <>
-      <div className="mb-3">
+    
+    <form onSubmit={handleAdminLogin}>
+    <div className="mb-3">
         <input
           type="email"
           className="form-control"
           placeholder="Correo Electronico"
-          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+          onChange={(e) => handleEmailChange(e.target.value)}
         />
       </div>
       <div className="mb-3">
@@ -38,10 +50,11 @@ export const AdminForm = () => {
           type="password"
           className="form-control"
           placeholder="Contraseña"
-          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+          onChange={(e) => handlePasswordChange(e.target.value)}
         />
       </div>
-      <button onClick={handleAdminLogin}>Iniciar Sesión</button>
+      <button type="submit">Iniciar Sesión</button>
       {success && (
         <div className="alert alert-success mt-3">
           <span>Ingreso Exitoso</span>
@@ -53,6 +66,8 @@ export const AdminForm = () => {
           <span>Correo o Contraseña Incorrecta</span>
         </div>
       )}
-    </>
+    
+    </form>
+     
   );
 };
