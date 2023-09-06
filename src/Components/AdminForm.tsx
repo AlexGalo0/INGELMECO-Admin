@@ -1,7 +1,6 @@
 import { auth } from "../config/firebase.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAdminForm } from "../hooks/useAdminForm.js";
-
 export const AdminForm = () => {
   const {
     email,
@@ -15,13 +14,13 @@ export const AdminForm = () => {
     handleSuccess,
   } = useAdminForm();
 
-  const handleAdminLogin = (e:React.FormEvent) => {
-    e.preventDefault()
+  const handleAdminLogin = (e: React.FormEvent) => {
+    e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         handleSuccess(true);
         setTimeout(() => {
-          navigate("/admin/add");
+          navigate("/admin/add-product");
           handleSuccess(false);
         }, 250);
       })
@@ -34,9 +33,8 @@ export const AdminForm = () => {
   };
 
   return (
-    
     <form onSubmit={handleAdminLogin}>
-    <div className="mb-3">
+      <div className="mb-3">
         <input
           type="email"
           className="form-control"
@@ -66,8 +64,6 @@ export const AdminForm = () => {
           <span>Correo o Contraseña Incorrecta</span>
         </div>
       )}
-    
     </form>
-     
   );
 };

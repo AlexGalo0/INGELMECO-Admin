@@ -7,12 +7,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<AdminForm />} />
-          <Route
-            path="/admin/add"
-            element={
-              <ProductForm/>
-            }
-          />
+          <Route path="/admin/add-product" element={<ProductForm />} />
         </Routes>
       </BrowserRouter>
     </>
