@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AdminForm } from "./Components/AdminForm";
+import { ProductForm } from "./Components/ProductForm";
 function App() {
   return (
     <>
@@ -7,11 +8,9 @@ function App() {
         <Routes>
           <Route path="/" element={<AdminForm />} />
           <Route
-            path="/home"
+            path="/admin/add"
             element={
-              <>
-                <h1>Home</h1>
-              </>
+              <ProductForm/>
             }
           />
         </Routes>

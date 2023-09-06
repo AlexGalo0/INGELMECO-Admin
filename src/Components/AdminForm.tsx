@@ -21,7 +21,7 @@ export const AdminForm = () => {
       .then(() => {
         handleSuccess(true);
         setTimeout(() => {
-          navigate("/home");
+          navigate("/admin/add");
           handleSuccess(false);
         }, 250);
       })
