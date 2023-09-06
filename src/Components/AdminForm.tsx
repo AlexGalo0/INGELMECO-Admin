@@ -29,7 +29,7 @@ export const AdminForm = () => {
         handleError(true);
         setTimeout(() => {
           handleError(false);
-        }, 1000);
+        }, 250);
       });
   };
 
