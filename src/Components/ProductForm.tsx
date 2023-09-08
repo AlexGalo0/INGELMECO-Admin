@@ -1,9 +1,8 @@
 import { useProductForm } from "../hooks/useProductForm";
-
-
 export const ProductForm = () => {
-  const { formData, setFormData, handleSubmit } = useProductForm();
- 
+  const { formData, setFormData, handleSubmit, handleImageChange } = useProductForm();
+  
+
   return (
     <>
       <h1>Agregar Producto</h1>
@@ -27,7 +26,6 @@ export const ProductForm = () => {
             }
           />
         </div>
-
         <div className="input-group mb-3">
           <span className="input-group-text">
             <b>L.</b>
@@ -49,7 +47,6 @@ export const ProductForm = () => {
             }
           />
         </div>
-
         <div className="input-group mb-3">
           <span className="input-group-text">
             <b>Categoría</b>
@@ -71,7 +68,6 @@ export const ProductForm = () => {
             <option value="Categoría 3">Categoría 3</option>
           </select>
         </div>
-
         <div className="mb-3">
           <div className="input-group">
             <span className="input-group-text" id="basic-addon3">
@@ -96,7 +92,6 @@ export const ProductForm = () => {
             Subcategoría no obligatoria
           </div>
         </div>
-
         <div className="input-group">
           <span className="input-group-text">
             <b>Descripción</b>
@@ -114,7 +109,18 @@ export const ProductForm = () => {
             }
           ></textarea>
         </div>
-
+        <div className="input-group mt-3">
+          <label className="input-group-text" htmlFor="inputGroupFile">
+            <b>Imagen del Producto</b>
+          </label>
+          <input
+            type="file"
+            className="form-control"
+            id="inputGroupFile"
+            accept="image/*"
+            onChange={(e) => handleImageChange(e.target.files[0])}
+          />
+        </div>
         <div className="mt-3">
           <button type="submit" className="btn btn-primary">
             Agregar Producto
