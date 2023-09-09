@@ -1,4 +1,3 @@
-export type ImagenProducto = string | ArrayBuffer | null  | File | Blob | undefined ;
 
 
 export interface ProductFormData {
