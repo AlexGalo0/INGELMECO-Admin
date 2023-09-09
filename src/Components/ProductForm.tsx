@@ -1,7 +1,9 @@
 import { useProductForm } from "../hooks/useProductForm";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export const ProductForm = () => {
+  // Ref necesario para la limpieza de la imagen después de la subida exitosa.
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const {
     formData,
     setFormData,
@@ -9,12 +11,13 @@ export const ProductForm = () => {
     handleSubmit,
     isUploading,
     uploadMessage,
-  } = useProductForm();
+  } = useProductForm(fileInputRef);
   const [imageError, setImageError] = useState<string | null>(null);
   const [nombreError, setNombreError] = useState<string | null>(null);
   const [descripcionError, setDescripcionError] = useState<string | null>(null);
   const [categoriaError, setCategoriaError] = useState<string | null>(null);
 
+  /* Las siguientes funciones son unicamente manejadores para validaciones de formulario. */
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
@@ -26,7 +29,7 @@ export const ProductForm = () => {
   };
 
   const handleNombreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const nombre = e.target.value.trim();
+    const nombre = e.target.value;
     if (nombre.length === 0) {
       setNombreError("El nombre no puede estar vacío");
     } else if (nombre.length < 3 || nombre.length > 50) {
@@ -43,7 +46,7 @@ export const ProductForm = () => {
   const handleDescripcionChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    const descripcion = e.target.value.trim();
+    const descripcion = e.target.value;
     if (descripcion.length === 0) {
       setDescripcionError("La descripción no puede estar vacía");
     } else {
@@ -55,9 +58,7 @@ export const ProductForm = () => {
     });
   };
 
-  const handleCategoriaChange = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  const handleCategoriaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const categoria = e.target.value;
     if (!categoria) {
       setCategoriaError("Selecciona una categoría");
@@ -88,9 +89,7 @@ export const ProductForm = () => {
             onChange={handleNombreChange}
             required
           />
-          {nombreError && (
-            <div className="invalid-feedback">{nombreError}</div>
-          )}
+          {nombreError && <div className="invalid-feedback">{nombreError}</div>}
         </div>
         <div className="input-group mb-3">
           <span className="input-group-text">
@@ -102,7 +101,7 @@ export const ProductForm = () => {
             placeholder="Precio de Producto"
             aria-label="Precio de Producto"
             aria-describedby="basic-addon2"
-            min={0.01} // Cambiado para evitar que el precio sea 0
+            min={0.1} // Cambiado para evitar que el precio sea 0
             step={0.01}
             value={formData.precioProducto}
             onChange={(e) =>
@@ -126,9 +125,21 @@ export const ProductForm = () => {
             required
           >
             <option value="">Selecciona una Categoría</option>
-            <option value="Categoría 1">Categoría 1</option>
-            <option value="Categoría 2">Categoría 2</option>
-            <option value="Categoría 3">Categoría 3</option>
+            <option value="Cables de Control">Cables de Control</option>
+            <option value="Cables de Potencia">Cables de Potencia</option>
+            <option value="Gabinete">Gabinete</option>
+            <option value="Automatización y Control">
+              Automatización y Control
+            </option>
+            <option value="Bancos Capacitores">Bancos Capacitores</option>
+            <option value="Distribución">Distribución</option>
+            <option value="Energía Solar">Energía Solar</option>
+            <option value="Control de Factor y de Potencia">
+              Control de Factor y de Potencia
+            </option>
+            <option value="Arrancador de Estado Sólido">
+              Arrancador de Estado Sólido
+            </option>
           </select>
           {categoriaError && (
             <div className="invalid-feedback">{categoriaError}</div>
@@ -185,13 +196,17 @@ export const ProductForm = () => {
             accept="image/*"
             onChange={handleFileChange}
             required
+            ref={(el) => (fileInputRef.current = el)}
           />
-          {imageError && (
-            <div className="invalid-feedback">{imageError}</div>
-          )}
+
+          {imageError && <div className="invalid-feedback">{imageError}</div>}
         </div>
         <div className="mt-3">
-          <button type="submit" className="btn btn-primary">
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={isUploading}
+          >
             {isUploading ? "Subiendo..." : "Agregar Producto"}
           </button>
         </div>

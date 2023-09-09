@@ -4,7 +4,10 @@ import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { db, storage } from "../config/firebase.js";
 
-export const useProductForm = () => {
+export const useProductForm = (
+  fileInputRef: React.MutableRefObject<HTMLInputElement | null>
+) => {
+  //Para reestablecer el formulario después de la subida exitosa.
   const initialFormData: ProductFormData = {
     nombreProducto: "",
     precioProducto: 0,
@@ -12,10 +15,13 @@ export const useProductForm = () => {
     subcategoriaProducto: "",
     descripcionProducto: "",
   };
-
+  // Para manejar el estado del formulario
   const [formData, setFormData] = useState<ProductFormData>(initialFormData);
+  // Para manejar el estado de la imagen
   const [file, setFile] = useState<File | null>(null);
+  // Para manejar el estado de la subida y asi poder mostrar elementos de Uploading...
   const [isUploading, setIsUploading] = useState(false);
+  // Para manejar el estado del mensaje de subida, seguramente se remueva en el futuro.
   const [uploadMessage, setUploadMessage] = useState("");
 
   const handleImageChange = (selectedFile: File | null) => {
@@ -23,6 +29,7 @@ export const useProductForm = () => {
   };
 
   const uploadFileToStorage = async (file: File) => {
+    //Codigo para subir la imagen a Firebase Storage , retorna la URL de la imagen.
     const storageRef = ref(storage, `productos/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -30,7 +37,8 @@ export const useProductForm = () => {
       uploadTask.on(
         "state_changed",
         (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log("Upload is " + progress + "% done");
         },
         (error) => {
@@ -48,13 +56,14 @@ export const useProductForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Validar que exista una imagen.
     if (file) {
       try {
         setIsUploading(true);
         setUploadMessage("Subiendo producto...");
-
+        // Subir la imagen a Firebase Storage
         const downloadURL = await uploadFileToStorage(file);
-
+        // Subir los datos del producto a Firestore
         const docRef = await addDoc(collection(db, "productos"), {
           nombreProducto: formData.nombreProducto,
           precioProducto: formData.precioProducto,
@@ -63,19 +72,17 @@ export const useProductForm = () => {
           descripcionProducto: formData.descripcionProducto,
           urlImagen: downloadURL,
         });
-        console.log("Subida Exitosa", docRef.id);
+        // Limpiar el estado de la subida para los mensajes de error y exito.
         setIsUploading(false);
         setUploadMessage("");
 
         // Limpiar el formulario después de la subida exitosa
         setFormData(initialFormData); // Restablecer el estado a los valores iniciales
+        fileInputRef.current.value = null; // Limpiar el input de imagen
       } catch (error) {
-        console.error("Error al subir la imagen o guardar el producto:", error);
         setUploadMessage("Error al subir el producto.");
         setIsUploading(false);
       }
-    } else {
-      console.log("Selecciona una imagen antes de enviar el formulario.");
     }
   };
 
