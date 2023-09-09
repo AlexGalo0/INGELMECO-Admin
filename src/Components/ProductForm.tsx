@@ -2,8 +2,14 @@ import { useProductForm } from "../hooks/useProductForm";
 import { useState } from "react";
 
 export const ProductForm = () => {
-  const { formData, setFormData, handleSubmit, handleImageChange } =
-    useProductForm();
+  const {
+    formData,
+    setFormData,
+    handleImageChange,
+    handleSubmit,
+    isUploading,
+    uploadMessage,
+  } = useProductForm();
   const [imageError, setImageError] = useState<string | null>(null);
   const [nombreError, setNombreError] = useState<string | null>(null);
   const [descripcionError, setDescripcionError] = useState<string | null>(null);
@@ -186,9 +192,14 @@ export const ProductForm = () => {
         </div>
         <div className="mt-3">
           <button type="submit" className="btn btn-primary">
-            Agregar Producto
+            {isUploading ? "Subiendo..." : "Agregar Producto"}
           </button>
         </div>
+        {uploadMessage && (
+          <div className={`mt-3 ${isUploading ? "text-info" : "text-success"}`}>
+            {uploadMessage}
+          </div>
+        )}
       </form>
     </>
   );
