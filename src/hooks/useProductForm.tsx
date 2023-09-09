@@ -20,15 +20,16 @@ export const useProductForm = () => {
   };
 
   const uploadFileToStorage = async (file: File) => {
-    const storageRef = ref(storage, file.name);
-    const uploadTask = uploadBytesResumable(storageRef, file);
 
+    const storageRef = ref(storage, `productos/${file.name}`);
+  
+    const uploadTask = uploadBytesResumable(storageRef, file);
+  
     return new Promise<string | null>((resolve, reject) => {
       uploadTask.on(
         "state_changed",
         (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log("Upload is " + progress + "% done");
         },
         (error) => {
@@ -56,9 +57,8 @@ export const useProductForm = () => {
           categoriaProducto: formData.categoriaProducto,
           subcategoriaProducto: formData.subcategoriaProducto,
           descripcionProducto: formData.descripcionProducto,
-          imagenProducto: downloadURL,
+          urlImagen: downloadURL,
         });
-
         console.log("Subida Exitosa", docRef.id);
       } catch (error) {
         console.error("Error al subir la imagen o guardar el producto:", error);
