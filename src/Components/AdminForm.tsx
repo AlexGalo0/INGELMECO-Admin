@@ -16,19 +16,26 @@ export const AdminForm = () => {
 
   const handleAdminLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email || !password) {
+      handleError(true);
+      setTimeout(() => {
+        handleError(false);
+      }, 1000);
+      return;
+    }
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         handleSuccess(true);
         setTimeout(() => {
           navigate("/admin/add-product");
           handleSuccess(false);
-        }, 250);
+        }, 1000);
       })
       .catch(() => {
         handleError(true);
         setTimeout(() => {
           handleError(false);
-        }, 250);
+        }, 1000);
       });
   };
 
@@ -38,9 +45,10 @@ export const AdminForm = () => {
         <input
           type="email"
           className="form-control"
-          placeholder="Correo Electronico"
+          placeholder="Correo Electrónico"
           value={email}
           onChange={(e) => handleEmailChange(e.target.value)}
+          required
         />
       </div>
       <div className="mb-3">
@@ -50,9 +58,12 @@ export const AdminForm = () => {
           placeholder="Contraseña"
           value={password}
           onChange={(e) => handlePasswordChange(e.target.value)}
+          required
         />
       </div>
-      <button type="submit">Iniciar Sesión</button>
+      <button type="submit" className="btn btn-primary">
+        Iniciar Sesión
+      </button>
       {success && (
         <div className="alert alert-success mt-3">
           <span>Ingreso Exitoso</span>
