@@ -23,6 +23,8 @@ export const useProductForm = (
   const [isUploading, setIsUploading] = useState(false);
   // Para manejar el estado del mensaje de subida, seguramente se remueva en el futuro.
   const [uploadMessage, setUploadMessage] = useState("");
+  //Para mostrar un mensaje de exito después de la subida.
+  const [successMessageVisible, setSuccessMessageVisible] = useState(false);
 
   const handleImageChange = (selectedFile: File | null) => {
     setFile(selectedFile);
@@ -64,7 +66,7 @@ export const useProductForm = (
         // Subir la imagen a Firebase Storage
         const downloadURL = await uploadFileToStorage(file);
         // Subir los datos del producto a Firestore
-        const docRef = await addDoc(collection(db, "productos"), {
+          await addDoc(collection(db, "productos"), {
           nombreProducto: formData.nombreProducto,
           precioProducto: formData.precioProducto,
           categoriaProducto: formData.categoriaProducto,
@@ -75,7 +77,13 @@ export const useProductForm = (
         // Limpiar el estado de la subida para los mensajes de error y exito.
         setIsUploading(false);
         setUploadMessage("");
+        // Mostrar el mensaje de éxito durante 1 segundo
+        setSuccessMessageVisible(true);
 
+        // Ocultar el mensaje de éxito después de 1 segundo
+        setTimeout(() => {
+          setSuccessMessageVisible(false);
+        }, 1000); // 1000 milisegundos = 1 segundo
         // Limpiar el formulario después de la subida exitosa
         setFormData(initialFormData); // Restablecer el estado a los valores iniciales
         fileInputRef.current.value = null; // Limpiar el input de imagen
@@ -93,5 +101,7 @@ export const useProductForm = (
     handleImageChange,
     isUploading,
     uploadMessage,
+    successMessageVisible,
   };
+  
 };

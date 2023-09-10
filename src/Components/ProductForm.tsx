@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 
 export const ProductForm = () => {
   // Ref necesario para la limpieza de la imagen después de la subida exitosa.
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null >(null);
   const {
     formData,
     setFormData,
@@ -11,6 +11,7 @@ export const ProductForm = () => {
     handleSubmit,
     isUploading,
     uploadMessage,
+    successMessageVisible,
   } = useProductForm(fileInputRef);
   const [imageError, setImageError] = useState<string | null>(null);
   const [nombreError, setNombreError] = useState<string | null>(null);
@@ -214,6 +215,9 @@ export const ProductForm = () => {
           <div className={`mt-3 ${isUploading ? "text-info" : "text-success"}`}>
             {uploadMessage}
           </div>
+        )}
+        {successMessageVisible && (
+          <div className={`mt-3 text-success`}>Subida Exitosa</div>
         )}
       </form>
     </>
