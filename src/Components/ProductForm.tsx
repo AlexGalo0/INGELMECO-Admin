@@ -19,23 +19,29 @@ export const ProductForm = () => {
   const [descripcionError, setDescripcionError] = useState<string | null>(null);
   const [categoriaError, setCategoriaError] = useState<string | null>(null);
   const [fileSecondary, setFileSecondary] = useState<File | null>(null);
+  const [marca, setMarca] = useState(""); // Estado para la selección de la marca
+  const [marcaError, setMarcaError] = useState<string | null>(null);
 
   /* Las siguientes funciones son únicamente manejadores para validaciones de formulario. */
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, isSecondary: boolean = false) => {
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    isSecondary: boolean = false
+  ) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setImageError(null);
       // Llama a handleImageChange con el parámetro isSecondary para distinguir entre imagen principal y secundaria
       handleImageChange(selectedFile, isSecondary);
-  
+
       // Si es una imagen secundaria, actualiza el estado de fileSecondary
       if (isSecondary) {
         setFileSecondary(selectedFile);
       }
-    } else if (!isSecondary) { // Solo muestra errores para la imagen principal si no se selecciona una imagen secundaria
+    } else if (!isSecondary) {
+      // Solo muestra errores para la imagen principal si no se selecciona una imagen secundaria
       setImageError("Selecciona una imagen");
     }
-  }
+  };
 
   const handleNombreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nombre = e.target.value;
@@ -80,6 +86,16 @@ export const ProductForm = () => {
     });
   };
 
+  const handleMarcaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedMarca = e.target.value;
+    if (selectedMarca === "") {
+      setMarcaError("Selecciona una marca");
+    } else {
+      setMarcaError(null);
+    }
+    setMarca(selectedMarca);
+  };
+  
   return (
     <>
       <h1>Agregar Producto</h1>
@@ -178,6 +194,29 @@ export const ProductForm = () => {
             Subcategoría no obligatoria
           </div>
         </div>
+        <div className="input-group mb-3">
+          <span className="input-group-text">
+            <b>Marca</b>
+          </span>
+          <select
+            className={`form-select ${marcaError ? "is-invalid" : ""}`}
+            aria-label="Marca del Producto"
+            value={marca}
+            onChange={handleMarcaChange}
+            required
+          >
+            <option value="">Selecciona una Marca</option>
+            <option value="SIEMENS">SIEMENS</option>
+            <option value="ABB">ABB</option>
+            <option value="Electronicon">Electronicon</option>
+            <option value="SIBA">SIBA</option>
+            <option value="Selec">Selec</option>
+            <option value="DataKom">DataKom</option>
+            <option value="Little Fuse">Little Fuse</option>
+            <option value="Otra Marca">Otra Marca</option>
+          </select>
+          {marcaError && <div className="invalid-feedback">{marcaError}</div>}
+        </div>
         <div className="input-group">
           <span className="input-group-text">
             <b>Descripción</b>
@@ -219,7 +258,7 @@ export const ProductForm = () => {
             className={`form-control ${imageError ? "is-invalid" : ""}`}
             id="inputGroupFileSecondary"
             accept="image/*"
-            onChange={(e) => handleFileChange(e, true)} 
+            onChange={(e) => handleFileChange(e, true)}
             ref={(el) => (secondaryFileInputRef.current = el)}
           />
           {imageError && <div className="invalid-feedback">{imageError}</div>}
