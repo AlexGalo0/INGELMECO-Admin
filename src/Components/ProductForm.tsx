@@ -3,7 +3,8 @@ import { useState, useRef } from "react";
 
 export const ProductForm = () => {
   // Ref necesario para la limpieza de la imagen después de la subida exitosa.
-  const fileInputRef = useRef<HTMLInputElement | null >(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const secondaryFileInputRef = useRef<HTMLInputElement | null>(null);
   const {
     formData,
     setFormData,
@@ -12,22 +13,29 @@ export const ProductForm = () => {
     isUploading,
     uploadMessage,
     successMessageVisible,
-  } = useProductForm(fileInputRef);
+  } = useProductForm(fileInputRef, secondaryFileInputRef);
   const [imageError, setImageError] = useState<string | null>(null);
   const [nombreError, setNombreError] = useState<string | null>(null);
   const [descripcionError, setDescripcionError] = useState<string | null>(null);
   const [categoriaError, setCategoriaError] = useState<string | null>(null);
+  const [fileSecondary, setFileSecondary] = useState<File | null>(null);
 
-  /* Las siguientes funciones son unicamente manejadores para validaciones de formulario. */
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  /* Las siguientes funciones son únicamente manejadores para validaciones de formulario. */
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, isSecondary: boolean = false) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setImageError(null);
-      handleImageChange(selectedFile);
-    } else {
+      // Llama a handleImageChange con el parámetro isSecondary para distinguir entre imagen principal y secundaria
+      handleImageChange(selectedFile, isSecondary);
+  
+      // Si es una imagen secundaria, actualiza el estado de fileSecondary
+      if (isSecondary) {
+        setFileSecondary(selectedFile);
+      }
+    } else if (!isSecondary) { // Solo muestra errores para la imagen principal si no se selecciona una imagen secundaria
       setImageError("Selecciona una imagen");
     }
-  };
+  }
 
   const handleNombreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nombre = e.target.value;
@@ -195,11 +203,25 @@ export const ProductForm = () => {
             className={`form-control ${imageError ? "is-invalid" : ""}`}
             id="inputGroupFile"
             accept="image/*"
-            onChange={handleFileChange}
+            onChange={(e) => handleFileChange(e)}
             required
             ref={(el) => (fileInputRef.current = el)}
           />
-
+          {imageError && <div className="invalid-feedback">{imageError}</div>}
+        </div>
+        {/* Agregar input para la imagen secundaria */}
+        <div className="input-group mt-3">
+          <label className="input-group-text" htmlFor="inputGroupFileSecondary">
+            <b>Imagen Secundaria</b>
+          </label>
+          <input
+            type="file"
+            className={`form-control ${imageError ? "is-invalid" : ""}`}
+            id="inputGroupFileSecondary"
+            accept="image/*"
+            onChange={(e) => handleFileChange(e, true)} 
+            ref={(el) => (secondaryFileInputRef.current = el)}
+          />
           {imageError && <div className="invalid-feedback">{imageError}</div>}
         </div>
         <div className="mt-3">
