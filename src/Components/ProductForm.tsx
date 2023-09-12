@@ -2,27 +2,27 @@ import { useProductForm } from "../hooks/useProductForm";
 import { useState, useRef } from "react";
 
 export const ProductForm = () => {
-  // Ref necesario para la limpieza de la imagen después de la subida exitosa.
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const secondaryFileInputRef = useRef<HTMLInputElement | null>(null);
+  const pdfInputRef = useRef<HTMLInputElement | null>(null); // Referencia al input de PDF
   const {
     formData,
     setFormData,
-    handleImageChange,
     handleSubmit,
+    handleImageChange,
+    handlePdfChange, // Manejo del cambio de PDF
     isUploading,
     uploadMessage,
     successMessageVisible,
-  } = useProductForm(fileInputRef, secondaryFileInputRef);
+   
+    pdfError, // Estado de errores del PDF
+  } = useProductForm(fileInputRef, secondaryFileInputRef, pdfInputRef);
   const [imageError, setImageError] = useState<string | null>(null);
   const [nombreError, setNombreError] = useState<string | null>(null);
   const [descripcionError, setDescripcionError] = useState<string | null>(null);
   const [categoriaError, setCategoriaError] = useState<string | null>(null);
   const [fileSecondary, setFileSecondary] = useState<File | null>(null);
-  const [marca, setMarca] = useState(""); // Estado para la selección de la marca
-  const [marcaError, setMarcaError] = useState<string | null>(null);
-
-  /* Las siguientes funciones son únicamente manejadores para validaciones de formulario. */
+  const [marcaError] = useState<string | null>(null);
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     isSecondary: boolean = false
@@ -30,15 +30,12 @@ export const ProductForm = () => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setImageError(null);
-      // Llama a handleImageChange con el parámetro isSecondary para distinguir entre imagen principal y secundaria
       handleImageChange(selectedFile, isSecondary);
 
-      // Si es una imagen secundaria, actualiza el estado de fileSecondary
       if (isSecondary) {
         setFileSecondary(selectedFile);
       }
-    } else if (!isSecondary) {
-      // Solo muestra errores para la imagen principal si no se selecciona una imagen secundaria
+    } else {
       setImageError("Selecciona una imagen");
     }
   };
@@ -73,6 +70,14 @@ export const ProductForm = () => {
     });
   };
 
+  const handleMarcaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const marca = e.target.value;
+    setFormData({
+      ...formData,
+      marcaProducto: marca,
+    });
+  };
+
   const handleCategoriaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const categoria = e.target.value;
     if (!categoria) {
@@ -86,16 +91,6 @@ export const ProductForm = () => {
     });
   };
 
-  const handleMarcaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedMarca = e.target.value;
-    if (selectedMarca === "") {
-      setMarcaError("Selecciona una marca");
-    } else {
-      setMarcaError(null);
-    }
-    setMarca(selectedMarca);
-  };
-  
   return (
     <>
       <h1>Agregar Producto</h1>
@@ -126,7 +121,7 @@ export const ProductForm = () => {
             placeholder="Precio de Producto"
             aria-label="Precio de Producto"
             aria-describedby="basic-addon2"
-            min={0.1} // Cambiado para evitar que el precio sea 0
+            min={0.1}
             step={0.01}
             value={formData.precioProducto}
             onChange={(e) =>
@@ -194,6 +189,7 @@ export const ProductForm = () => {
             Subcategoría no obligatoria
           </div>
         </div>
+
         <div className="input-group mb-3">
           <span className="input-group-text">
             <b>Marca</b>
@@ -201,7 +197,7 @@ export const ProductForm = () => {
           <select
             className={`form-select ${marcaError ? "is-invalid" : ""}`}
             aria-label="Marca del Producto"
-            value={marca}
+            value={formData.marcaProducto}
             onChange={handleMarcaChange}
             required
           >
@@ -217,6 +213,7 @@ export const ProductForm = () => {
           </select>
           {marcaError && <div className="invalid-feedback">{marcaError}</div>}
         </div>
+
         <div className="input-group">
           <span className="input-group-text">
             <b>Descripción</b>
@@ -244,11 +241,11 @@ export const ProductForm = () => {
             accept="image/*"
             onChange={(e) => handleFileChange(e)}
             required
-            ref={(el) => (fileInputRef.current = el)}
+            ref={(el) => (secondaryFileInputRef.current = el)}
           />
           {imageError && <div className="invalid-feedback">{imageError}</div>}
         </div>
-        {/* Agregar input para la imagen secundaria */}
+        {/* Input para la imagen secundaria */}
         <div className="input-group mt-3">
           <label className="input-group-text" htmlFor="inputGroupFileSecondary">
             <b>Imagen Secundaria</b>
@@ -259,9 +256,24 @@ export const ProductForm = () => {
             id="inputGroupFileSecondary"
             accept="image/*"
             onChange={(e) => handleFileChange(e, true)}
-            ref={(el) => (secondaryFileInputRef.current = el)}
+            ref={(el) => (fileInputRef.current = el)}
           />
           {imageError && <div className="invalid-feedback">{imageError}</div>}
+        </div>
+        {/* Input para el archivo PDF */}
+        <div className="input-group mt-3">
+          <label className="input-group-text" htmlFor="inputGroupFilePDF">
+            <b>Archivo PDF (opcional)</b>
+          </label>
+          <input
+            type="file"
+            className={`form-control ${pdfError ? "is-invalid" : ""}`}
+            id="inputGroupFilePDF"
+            accept="application/pdf"
+            onChange={(e) => handlePdfChange(e.target.files?.[0])}
+            ref={(el) => (pdfInputRef.current = el)}
+          />
+          {pdfError && <div className="invalid-feedback">{pdfError}</div>}
         </div>
         <div className="mt-3">
           <button

@@ -6,6 +6,9 @@ export interface ProductFormData {
   categoriaProducto: string;
   subcategoriaProducto: string;
   descripcionProducto: string;
+  
+
+  marcaProducto: string;
  
 }
 
