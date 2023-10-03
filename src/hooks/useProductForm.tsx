@@ -11,7 +11,6 @@ export const useProductForm = (
 ) => {
   const initialFormData: ProductFormData = {
     nombreProducto: "",
-    precioProducto: 0,
     categoriaProducto: "",
     subcategoriaProducto: "",
     descripcionProducto: "",
@@ -27,7 +26,10 @@ export const useProductForm = (
   const [successMessageVisible, setSuccessMessageVisible] = useState(false);
   const [pdfError, setPdfError] = useState<string | null>(null); // Nuevo estado para errores del PDF
 
-  const handleImageChange = (selectedFile: File | null, isSecondary: boolean = false) => {
+  const handleImageChange = (
+    selectedFile: File | null,
+    isSecondary: boolean = false
+  ) => {
     if (isSecondary) {
       setFileSecondary(selectedFile);
     } else {
@@ -35,8 +37,11 @@ export const useProductForm = (
     }
   };
 
-  const uploadFileToStorage = async (file: File, isSecondary: boolean = false) => {
-    const fileName = isSecondary ? `${file.name}_SECONDARY` : file.name;
+  const uploadFileToStorage = async (
+    file: File,
+    isSecondary: boolean = false
+  ) => {
+    const fileName = isSecondary ? `${file.name}` : file.name;
     const storageRef = ref(storage, `productos/${fileName}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -79,7 +84,9 @@ export const useProductForm = (
             reject(error);
           },
           async () => {
-            const pdfDownloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+            const pdfDownloadURL = await getDownloadURL(
+              uploadTask.snapshot.ref
+            );
             resolve(pdfDownloadURL);
           }
         );
@@ -95,28 +102,35 @@ export const useProductForm = (
 
     if (file) {
       try {
+        const imageName = file.name;
         setIsUploading(true);
         setUploadMessage("Subiendo producto...");
         const downloadURL = await uploadFileToStorage(file);
         const productData = {
           nombreProducto: formData.nombreProducto,
-          precioProducto: formData.precioProducto,
+
           categoriaProducto: formData.categoriaProducto,
           subcategoriaProducto: formData.subcategoriaProducto,
           descripcionProducto: formData.descripcionProducto,
           urlImagen: downloadURL,
           marcaProducto: formData.marcaProducto,
+          imageName: imageName,
         };
 
         if (fileSecondary) {
-          const downloadURLSecondary = await uploadFileToStorage(fileSecondary, true);
+          const downloadURLSecondary = await uploadFileToStorage(
+            fileSecondary,
+            true
+          );
           productData.urlImagenSecundaria = downloadURLSecondary;
+          productData.imageNameSecondary = fileSecondary.name;
         }
 
         // Manejar el archivo PDF si existe
         if (pdfFile) {
           const pdfDownloadURL = await uploadPdfToStorage(pdfFile);
           productData.urlPdf = pdfDownloadURL;
+          productData.pdfName = pdfFile.name;
         }
 
         await addDoc(collection(db, "productos"), productData);

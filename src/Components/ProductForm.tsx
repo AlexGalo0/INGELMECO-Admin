@@ -14,7 +14,7 @@ export const ProductForm = () => {
     isUploading,
     uploadMessage,
     successMessageVisible,
-   
+
     pdfError, // Estado de errores del PDF
   } = useProductForm(fileInputRef, secondaryFileInputRef, pdfInputRef);
   const [imageError, setImageError] = useState<string | null>(null);
@@ -111,28 +111,7 @@ export const ProductForm = () => {
           />
           {nombreError && <div className="invalid-feedback">{nombreError}</div>}
         </div>
-        <div className="input-group mb-3">
-          <span className="input-group-text">
-            <b>L.</b>
-          </span>
-          <input
-            type="number"
-            className="form-control"
-            placeholder="Precio de Producto"
-            aria-label="Precio de Producto"
-            aria-describedby="basic-addon2"
-            min={0.1}
-            step={0.01}
-            value={formData.precioProducto}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                precioProducto: parseFloat(e.target.value),
-              })
-            }
-            required
-          />
-        </div>
+
         <div className="input-group mb-3">
           <span className="input-group-text">
             <b>Categoría</b>
