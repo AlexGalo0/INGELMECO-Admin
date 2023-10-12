@@ -4,21 +4,28 @@ import { db, storage } from "../config/firebase.js";
 import { deleteObject, ref } from "firebase/storage";
 
 export const ProductTable = () => {
-  const { productos, loading , fetchProducts} = useProductFetch();
-  const handleDelete = async (id: string, imageName:string, imageSecondaryName:string,pdfName:string) => {
-    console.log(id);
-    console.log(imageName, imageSecondaryName,pdfName);
+  const { productos, loading, fetchProducts } = useProductFetch();
+  const handleDelete = async (
+    id: string,
+    imageName: string,
+    imageSecondaryName: string,
+    pdfName: string
+  ) => {
     try {
       // Elimina el documento de Firestore por su ID
       await deleteDoc(doc(collection(db, "productos"), id));
       // Elimina la imagen del storage
-     await deleteObject(ref(storage, `productos/${imageName}`));
-     await deleteObject(ref(storage, `productos/${imageSecondaryName}`));
-      await deleteObject(ref(storage, `pdfs/${pdfName}`));
-       // Después de borrar, actualiza la tabla
-       fetchProducts();
+      await deleteObject(ref(storage, `productos/${imageName}`));
+      if (imageSecondaryName) {
+        await deleteObject(ref(storage, `productos/${imageSecondaryName}`));
+      }
+      if (pdfName) {
+        await deleteObject(ref(storage, `pdfs/${pdfName}`));
+      }
     } catch (error) {
       console.error("Error al borrar el producto:", error);
+    } finally {
+      fetchProducts();
     }
   };
 
@@ -47,9 +54,18 @@ export const ProductTable = () => {
                 <td>{producto.marcaProducto}</td>
                 <td>{producto.categoriaProducto}</td>
                 <td>{producto.subcategoriaProducto}</td>
-                
+
                 <td>
-                  <button onClick={() => handleDelete(producto.id, producto.imageName,producto.imageNameSecondary,producto.pdfName)}>
+                  <button
+                    onClick={() =>
+                      handleDelete(
+                        producto.id,
+                        producto.imageName,
+                        producto.imageNameSecondary,
+                        producto.pdfName
+                      )
+                    }
+                  >
                     Borrar
                   </button>
                 </td>

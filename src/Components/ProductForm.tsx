@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 export const ProductForm = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const secondaryFileInputRef = useRef<HTMLInputElement | null>(null);
-  const pdfInputRef = useRef<HTMLInputElement | null>(null); // Referencia al input de PDF
+  const pdfInputRef = useRef<HTMLInputElement | null >(null); // Referencia al input de PDF
   const {
     formData,
     setFormData,
@@ -14,7 +14,6 @@ export const ProductForm = () => {
     isUploading,
     uploadMessage,
     successMessageVisible,
-
     pdfError, // Estado de errores del PDF
   } = useProductForm(fileInputRef, secondaryFileInputRef, pdfInputRef);
   const [imageError, setImageError] = useState<string | null>(null);
