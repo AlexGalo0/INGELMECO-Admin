@@ -58,7 +58,7 @@ export const ProductForm = () => {
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     const descripcion = e.target.value;
-    if (descripcion.length === 0) {
+    if (descripcion.trim().length === 0) {
       setDescripcionError("La descripción no puede estar vacía");
     } else {
       setDescripcionError(null);
