@@ -40,7 +40,7 @@ export const AdminForm = () => {
   };
 
   return (
-    <form onSubmit={handleAdminLogin}>
+    <form onSubmit={handleAdminLogin} className="h-50 me-auto bg-danger d-flex flex-column justify-content-center">
       <div className="mb-3">
         <input
           type="email"

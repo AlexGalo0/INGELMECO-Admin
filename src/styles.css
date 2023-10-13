@@ -1,14 +1,1 @@
-.bar {
-  height: 50px;
-  background-color: #000028;
-}
-.container {
-  min-height: 88vh;
-  
-  padding-right: 0;
-  padding-left: 0;
-  min-width: 100%;
-}
-.container > div:first-child {
-  flex-grow: 1;
-}
+
