@@ -31,10 +31,10 @@ export const ProductTable = () => {
 
   return (
     <div>
-      <h1>Productos</h1>
       {loading ? (
         <p>Cargando productos...</p>
       ) : (
+        <div className="product-table">
         <table>
           <thead>
             <tr>
@@ -73,6 +73,7 @@ export const ProductTable = () => {
             ))}
           </tbody>
         </table>
+        </div>
       )}
     </div>
   );
