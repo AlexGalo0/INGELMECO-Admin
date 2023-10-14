@@ -1,6 +1,8 @@
 import { auth } from "../config/firebase.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAdminForm } from "../hooks/useAdminForm.js";
+import { useState } from "react";
+
 export const AdminForm = () => {
   const {
     email,
@@ -39,42 +41,67 @@ export const AdminForm = () => {
       });
   };
 
-  return (
-    <form onSubmit={handleAdminLogin} className="h-50 me-auto bg-danger d-flex flex-column justify-content-center">
-      <div className="mb-3">
-        <input
-          type="email"
-          className="form-control"
-          placeholder="Correo Electrónico"
-          value={email}
-          onChange={(e) => handleEmailChange(e.target.value)}
-          required
-        />
-      </div>
-      <div className="mb-3">
-        <input
-          type="password"
-          className="form-control"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => handlePasswordChange(e.target.value)}
-          required
-        />
-      </div>
-      <button type="submit" className="btn btn-primary">
-        Iniciar Sesión
-      </button>
-      {success && (
-        <div className="alert alert-success mt-3">
-          <span>Ingreso Exitoso</span>
-        </div>
-      )}
+  const handleFocus = (state: React.Dispatch<React.SetStateAction<boolean>>) => {
+    state(true);
+  };
 
-      {error && (
-        <div className="alert alert-danger mt-3">
-          <span>Correo o Contraseña Incorrecta</span>
-        </div>
-      )}
-    </form>
+  const handleBlur = (state: React.Dispatch<React.SetStateAction<boolean>>) => {
+    if (email === '' || password === '') {
+      state(false);
+    }
+  };
+
+  const [isActiveEml, setIsActiveEml] = useState<boolean>(false);
+  const [isActivePass, setIsActivePass] = useState<boolean>(false);
+
+  return (
+    <div className="col-sm-6 form">
+      <div className="signup form-peice">
+        <form onSubmit={handleAdminLogin} className="signup-form">
+
+          <div className="form-group">
+            <label htmlFor="email" className={isActiveEml ? 'active' : ''}>Correo Electrónico</label>
+            <input
+              type="email"
+              id="email"
+              className="email"
+              value={email}
+              onChange={(e) => handleEmailChange(e.target.value)}
+              onFocus={() => handleFocus(setIsActiveEml)}
+              onBlur={() => handleBlur(setIsActiveEml)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password" className={isActivePass ? 'active' : ''}>Password</label>
+            <input
+              type="password"
+              id="password"
+              className="pass"
+              value={password}
+              onChange={(e) => handlePasswordChange(e.target.value)}
+              onFocus={() => handleFocus(setIsActivePass)}
+              onBlur={() => handleBlur(setIsActivePass)}
+              required
+            />
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Iniciar Sesión
+          </button>
+          {success && (
+            <div className="alert alert-success mt-3">
+              <span>Ingreso Exitoso</span>
+            </div>
+          )}
+
+          {error && (
+            <div className="alert alert-danger mt-3">
+              <span>Correo o Contraseña Incorrecta</span>
+            </div>
+          )}
+        </form>
+      </div>
+    </div>
   );
 };
