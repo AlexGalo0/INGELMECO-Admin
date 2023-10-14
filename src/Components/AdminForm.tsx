@@ -45,8 +45,8 @@ export const AdminForm = () => {
     state(true);
   };
 
-  const handleBlur = (state: React.Dispatch<React.SetStateAction<boolean>>) => {
-    if (email === '' || password === '') {
+  const handleBlur = (state: React.Dispatch<React.SetStateAction<boolean>>, variable: string) => {
+    if (variable === '') {
       state(false);
     }
   };
@@ -59,16 +59,18 @@ export const AdminForm = () => {
       <div className="signup form-peice">
         <form onSubmit={handleAdminLogin} className="signup-form">
 
+          <img className="img-fluid" src="src\assets\logo.png" alt="Logo Ingemeco img" />
+
           <div className="form-group">
             <label htmlFor="email" className={isActiveEml ? 'active' : ''}>Correo Electrónico</label>
             <input
               type="email"
               id="email"
-              className="email"
+              className=""
               value={email}
               onChange={(e) => handleEmailChange(e.target.value)}
               onFocus={() => handleFocus(setIsActiveEml)}
-              onBlur={() => handleBlur(setIsActiveEml)}
+              onBlur={() => handleBlur(setIsActiveEml, email)}
               required
             />
           </div>
@@ -78,17 +80,19 @@ export const AdminForm = () => {
             <input
               type="password"
               id="password"
-              className="pass"
+              className=""
               value={password}
               onChange={(e) => handlePasswordChange(e.target.value)}
               onFocus={() => handleFocus(setIsActivePass)}
-              onBlur={() => handleBlur(setIsActivePass)}
+              onBlur={() => handleBlur(setIsActivePass, password)}
               required
             />
           </div>
+
           <button type="submit" className="btn btn-primary">
             Iniciar Sesión
           </button>
+
           {success && (
             <div className="alert alert-success mt-3">
               <span>Ingreso Exitoso</span>
@@ -100,6 +104,7 @@ export const AdminForm = () => {
               <span>Correo o Contraseña Incorrecta</span>
             </div>
           )}
+
         </form>
       </div>
     </div>
