@@ -19,7 +19,7 @@ const Sidebar = () => {
 };
 export const ProductsAdmin = () => {
   return (
-    <div className="container">
+    <div className="container-sidebar">
       <Sidebar />
       <ProductTable />
     </div>

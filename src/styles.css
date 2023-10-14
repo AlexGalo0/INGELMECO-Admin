@@ -279,7 +279,7 @@ footer p a:focus:hover {
 }
 
 /* De La Pagina de Productos */
-.container {
+.container-sidebar {
   display: flex;
   margin: 0;
   padding: 0;
