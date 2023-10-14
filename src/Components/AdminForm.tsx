@@ -1,7 +1,6 @@
 import { auth } from "../config/firebase.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAdminForm } from "../hooks/useAdminForm.js";
-import { useState } from "react";
 
 export const AdminForm = () => {
   const {
@@ -41,57 +40,46 @@ export const AdminForm = () => {
       });
   };
 
-  const handleFocus = (state: React.Dispatch<React.SetStateAction<boolean>>) => {
-    state(true);
-  };
-
-  const handleBlur = (state: React.Dispatch<React.SetStateAction<boolean>>, variable: string) => {
-    if (variable === '') {
-      state(false);
-    }
-  };
-
-  const [isActiveEml, setIsActiveEml] = useState<boolean>(false);
-  const [isActivePass, setIsActivePass] = useState<boolean>(false);
-
   return (
     <div className="col-sm-6 form">
-      <div className="signup form-peice">
-        <form onSubmit={handleAdminLogin} className="signup-form">
+      <div className="form-peice">
+        <form onSubmit={handleAdminLogin}>
 
-          <img className="img-fluid" src="src\assets\logo.png" alt="Logo Ingemeco img" />
+          <img className="img-fluid pb-4" src="src\assets\logo.png" alt="Logo Ingemeco img" />
 
-          <div className="form-group">
-            <label htmlFor="email" className={isActiveEml ? 'active' : ''}>Correo Electrónico</label>
-            <input
+
+          <div className="form__group field my-3">
+            <input 
               type="email"
               id="email"
-              className=""
+              className="form__field"
               value={email}
               onChange={(e) => handleEmailChange(e.target.value)}
-              onFocus={() => handleFocus(setIsActiveEml)}
-              onBlur={() => handleBlur(setIsActiveEml, email)}
-              required
+              placeholder="email" 
+              required 
             />
+            <label htmlFor="email" className="form__label">Correo Electrónico</label>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="password" className={isActivePass ? 'active' : ''}>Password</label>
-            <input
+          <div className="form__group field my-3">
+            <input 
               type="password"
               id="password"
-              className=""
+              className="form__field"
               value={password}
               onChange={(e) => handlePasswordChange(e.target.value)}
-              onFocus={() => handleFocus(setIsActivePass)}
-              onBlur={() => handleBlur(setIsActivePass, password)}
-              required
+              placeholder="email" 
+              required 
             />
+            <label htmlFor="email" className="form__label">Constraseña</label>
           </div>
 
-          <button type="submit" className="btn btn-primary">
-            Iniciar Sesión
-          </button>
+          <div className="d-grid justify-content-center py-4">
+            {/* <button type="submit" className="btn btn-primary">
+              Iniciar Sesión
+            </button> */}
+            <button id="bottone5" type="submit">Iniciar Sesión</button>
+          </div>
 
           {success && (
             <div className="alert alert-success mt-3">
