@@ -334,16 +334,15 @@ section#formHolder {
 }
 
 .logout-button {
-  background-color: #ff0000;
-  color: #ffffff;
+background-color: #FFFFFF;
+  color: black;
+  font-weight: bold;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
 }
 
-.logout-button:hover {
-  background-color: #cc0000;
-}
+
 
 .product-table {
  
@@ -369,6 +368,6 @@ section#formHolder {
   max-width: 42px; /* Establece el tamaño máximo de la imagen */
 }
 .small-text {
-    font-size: 14px; /* Ajusta el tamaño de la fuente según tus preferencias */
+    font-size: 15px; /* Ajusta el tamaño de la fuente según tus preferencias */
     padding-right:30px;
   }

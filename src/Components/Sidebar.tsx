@@ -13,28 +13,38 @@ export const Sidebar = () => {
 
       <div className="sidebar-menu pt-5 flex-grow-1 text-center">
         <ul className="my-3">
-          <div>
-            <li className="my-2 d-flex align-items-center ">
-              <div className="image-container mr-2">
-                <img
-                  className="img-icon"
-                  src="../src/assets/bienes.png"
-                  alt="Ícono de Producto"
-                />
-              </div>
-              <Link
-                to="/admin/add-product"
-                className="menu-link-bold small-text"
-                
-              >
-                Agregar Producto
-              </Link>
-            </li>
-          </div>
+          <li className="my-2 d-flex align-items-center">
+            <div className="image-container mr-2">
+              <img
+                className="img-icon"
+                src="../src/assets/bienes.png"
+                alt="Ícono de Producto"
+              />
+            </div>
+            <Link
+              to="/admin/add-product"
+              className="menu-link-bold small-text"
+            >
+              Agregar Producto
+            </Link>
+          </li>
         </ul>
       </div>
 
-      <button className="logout-button mb-5">Cerrar Sesión</button>
+      <div className="sidebar-menu pb-5 text-center">
+        <ul className="my-3">
+          <li className="d-flex align-items-center">
+            <div className="image-container ">
+              <img
+                className="img-icon"
+                src="../src/assets/cerrar-sesion.png"
+                alt="Ícono de Cerrar Sesión"
+              />
+            </div>
+            <span className="menu-link-bold small-text">Cerrar Sesión</span>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };
