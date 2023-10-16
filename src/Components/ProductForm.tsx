@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 export const ProductForm = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const secondaryFileInputRef = useRef<HTMLInputElement | null>(null);
-  const pdfInputRef = useRef<HTMLInputElement | null >(null); // Referencia al input de PDF
+  const pdfInputRef = useRef<HTMLInputElement | null>(null); // Referencia al input de PDF
   const {
     formData,
     setFormData,
@@ -16,12 +16,14 @@ export const ProductForm = () => {
     successMessageVisible,
     pdfError, // Estado de errores del PDF
   } = useProductForm(fileInputRef, secondaryFileInputRef, pdfInputRef);
+
   const [imageError, setImageError] = useState<string | null>(null);
   const [nombreError, setNombreError] = useState<string | null>(null);
   const [descripcionError, setDescripcionError] = useState<string | null>(null);
   const [categoriaError, setCategoriaError] = useState<string | null>(null);
   const [fileSecondary, setFileSecondary] = useState<File | null>(null);
   const [marcaError] = useState<string | null>(null);
+
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     isSecondary: boolean = false
@@ -91,10 +93,23 @@ export const ProductForm = () => {
   };
 
   return (
-    <>
-    
-      <h1>Agregar Producto</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="mx-5">
+      <h1 className="text-light">Agregar Producto</h1>
+      <form onSubmit={handleSubmit} className="w-50">
+
+        <div className="form__group field my-3">
+          <input
+            type="email"
+            id="email"
+            className="form__field"
+            value={formData.nombreProducto}
+            onChange={handleNombreChange}
+            placeholder="email"
+            required
+          />
+          <label htmlFor="email" className="form__label">Nombre del Producto</label>
+        </div>
+
         <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">
             <b>Nombre de Producto</b>
@@ -272,6 +287,6 @@ export const ProductForm = () => {
           <div className={`mt-3 text-success`}>Subida Exitosa</div>
         )}
       </form>
-    </>
+    </div>
   );
 };
