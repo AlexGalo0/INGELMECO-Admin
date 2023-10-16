@@ -1,7 +1,7 @@
 import { auth } from "../config/firebase.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAdminForm } from "../hooks/useAdminForm.js";
-import {useAuth} from '../hooks/useAuth.js'
+
 export const AdminForm = () => {
   const {
     email,
@@ -14,9 +14,7 @@ export const AdminForm = () => {
     handleError,
     handleSuccess,
   } = useAdminForm();
-
-  const authContext  = useAuth()
-  console.log(authContext);
+  
 
   const handleAdminLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,6 +27,7 @@ export const AdminForm = () => {
     }
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
+       
         handleSuccess(true);
         setTimeout(() => {
           navigate("/admin/add-product");
@@ -79,7 +78,7 @@ export const AdminForm = () => {
               required
             />
             <label htmlFor="email" className="form__label">
-              Constraseña
+              Contraseña
             </label>
           </div>
 

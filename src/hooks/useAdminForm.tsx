@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { useCallback } from 'react';
 export const useAdminForm = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -8,21 +8,21 @@ export const useAdminForm = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const handleEmailChange = (newEmail: string) => {
+  const handleEmailChange = useCallback((newEmail: string) => {
     setEmail(newEmail);
-  };
+  }, []);
 
-  const handlePasswordChange = (newPassword: string) => {
+  const handlePasswordChange = useCallback((newPassword: string) => {
     setPassword(newPassword);
-  };
+  }, []);
 
-  const handleError = (hasError: boolean) => {
+  const handleError = useCallback((hasError: boolean) => {
     setError(hasError);
-  };
+  }, []);
 
-  const handleSuccess = (isSuccess: boolean) => {
+  const handleSuccess = useCallback((isSuccess: boolean) => {
     setSuccess(isSuccess);
-  };
+  }, []);
 
   return {
     email,

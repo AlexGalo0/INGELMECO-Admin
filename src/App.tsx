@@ -1,20 +1,37 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LoginAdmin, ProductsAdmin, FormProductsAdmin } from "./pages";
-import { AuthProvider } from "./context/AuthProvider";
+// Asegúrate de importar correctamente AuthProvider
 
 function App() {
   return (
-    <>
-      <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            <Route path="/" element={<LoginAdmin />} />
-            <Route path="/admin/add-product" element={<FormProductsAdmin />} />
-            <Route path="/admin/products" element={<ProductsAdmin />} />
-          </Routes>
-        </AuthProvider>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+
+        <Routes>
+          {/* Ruta de inicio de sesión */}
+          <Route path="/" element={<LoginAdmin />} />
+
+          {/* Ruta protegida: agregar producto */}
+          <Route
+            path="/admin/add-product"
+            element={
+             
+                <FormProductsAdmin />
+            
+            }
+          />
+
+          {/* Ruta protegida: lista de productos */}
+          <Route
+            path="/admin/products"
+            element={
+             
+                <ProductsAdmin />
+           
+            }
+          />
+        </Routes>
+    
+    </BrowserRouter>
   );
 }
 
