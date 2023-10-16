@@ -22,7 +22,7 @@ export const ProductForm = () => {
   const [descripcionError, setDescripcionError] = useState<string | null>(null);
   const [categoriaError, setCategoriaError] = useState<string | null>(null);
   const [fileSecondary, setFileSecondary] = useState<File | null>(null);
-  const [marcaError] = useState<string | null>(null);
+  const [marcaError, setMarcaError] = useState<string | null>(null);
 
   console.log(fileSecondary);
 
@@ -75,6 +75,12 @@ export const ProductForm = () => {
 
   const handleMarcaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const marca = e.target.value;
+    if (!marca) {
+      setMarcaError("Selecciona una marca");
+      setShowMarca(false);
+    } else {
+      setMarcaError(null);
+    }
     setFormData({
       ...formData,
       marcaProducto: marca,
@@ -85,6 +91,7 @@ export const ProductForm = () => {
     const categoria = e.target.value;
     if (!categoria) {
       setCategoriaError("Selecciona una categoría");
+      setShowCategories(false);
     } else {
       setCategoriaError(null);
     }
@@ -94,187 +101,232 @@ export const ProductForm = () => {
     });
   };
 
+  const [showCategories, setShowCategories] = useState<boolean>(false);
+  const [showMarca, setShowMarca] = useState<boolean>(false);
+
+  const handleShowCategories = () => {
+    setShowCategories(!showCategories);
+  }
+
+  const handleShowMarca = () => {
+    setShowMarca(!showMarca);
+  }
+
   return (
-    <>
-      <h1 style={{color:"white"}}>Agregar Producto</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="input-group mb-3">
-          <span className="input-group-text" id="basic-addon1">
-            <b>Nombre de Producto</b>
-          </span>
-          <input
-            type="text"
-            className={`form-control ${nombreError ? "is-invalid" : ""}`}
-            placeholder="Nombre de Producto"
-            aria-label="Nombre de Producto"
-            aria-describedby="basic-addon1"
-            value={formData.nombreProducto}
-            onChange={handleNombreChange}
-            required
-          />
-          {nombreError && <div className="invalid-feedback">{nombreError}</div>}
-        </div>
+    <div className="m-4 rounded-4" style={{ backgroundColor: '#DDD', height: '600px' }}>
 
-        <div className="input-group mb-3">
-          <span className="input-group-text">
-            <b>Categoría</b>
-          </span>
-          <select
-            className={`form-select ${categoriaError ? "is-invalid" : ""}`}
-            aria-label="Categoría de Producto"
-            value={formData.categoriaProducto}
-            onChange={handleCategoriaChange}
-            required
-          >
-            <option value="">Selecciona una Categoría</option>
-            <option value="Cables de Control">Cables de Control</option>
-            <option value="Cables de Potencia">Cables de Potencia</option>
-            <option value="Gabinete">Gabinete</option>
-            <option value="Automatización y Control">
-              Automatización y Control
-            </option>
-            <option value="Bancos Capacitores">Bancos Capacitores</option>
-            <option value="Distribución">Distribución</option>
-            <option value="Energía Solar">Energía Solar</option>
-            <option value="Control de Factor y de Potencia">
-              Control de Factor y de Potencia
-            </option>
-            <option value="Arrancador de Estado Sólido">
-              Arrancador de Estado Sólido
-            </option>
-          </select>
-          {categoriaError && (
-            <div className="invalid-feedback">{categoriaError}</div>
-          )}
-        </div>
-        <div className="mb-3">
-          <div className="input-group">
-            <span className="input-group-text" id="basic-addon3">
-              <b>Subcategoría</b>
-            </span>
-            <input
-              type="text"
-              className="form-control"
-              aria-label="Subcategoría de Producto"
-              aria-describedby="basic-addon3"
-              placeholder="Subcategoría de Producto"
-              value={formData.subcategoriaProducto}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  subcategoriaProducto: e.target.value,
-                })
-              }
-            />
+      <p className="fw-bold m-0 px-5 pt-3" style={{ color: '#000' }}>Registrar producto</p>
+
+      <form onSubmit={handleSubmit} className="px-5 pb-4 h-100">
+
+        <div className="container">
+          <div className="row">
+            {/* Primera columna*/}
+            <div className="col">
+
+              <div className="form__group field my-3">
+                <input
+                  type="text"
+                  id="NameProduct"
+                  value={formData.nombreProducto}
+                  onChange={handleNombreChange}
+                  className={`form__field ${nombreError ? "is-invalid" : ""}`}
+                  placeholder="Nombre del Producto"
+                  aria-label="Nombre del Producto"
+                  required
+                  style={{ color: '#000' }}
+                />
+                <label htmlFor="NameProduct" className="form__label">Nombre del Producto</label>
+                {nombreError && <div className="invalid-feedback">{nombreError}</div>}
+              </div>
+
+              <div className="form__group field my-3">
+                {
+                  showCategories ? (
+                    <select
+                      id="CategorieProduct"
+                      value={formData.categoriaProducto}
+                      onChange={handleCategoriaChange}
+                      className={`form__field ${categoriaError ? "is-invalid" : ""}`}
+                      placeholder="Categoría del Producto"
+                      aria-label="Categoría del Producto"
+                      required
+                      style={{ color: '#048c88' }}
+                    >
+                      <option value="">Selecciona una Categoría</option>
+                      <option value="Cables de Control">Cables de Control</option>
+                      <option value="Cables de Potencia">Cables de Potencia</option>
+                      <option value="Gabinete">Gabinete</option>
+                      <option value="Automatización y Control">Automatización y Control</option>
+                      <option value="Bancos Capacitores">Bancos Capacitores</option>
+                      <option value="Distribución">Distribución</option>
+                      <option value="Energía Solar">Energía Solar</option>
+                      <option value="Control de Factor y de Potencia">Control de Factor y de Potencia</option>
+                      <option value="Arrancador de Estado Sólido">Arrancador de Estado Sólido</option>
+                    </select>
+                  ) : (
+                    <input type="text" id="CategorieProduct" value={""}
+                      onClick={handleShowCategories}
+                      className={`form__field ${showCategories ? "d-none" : ""}`}
+                      placeholder="Categoría del Producto"
+                      aria-label="Categoría del Producto" style={{ color: '#000' }}
+                    />
+                  )
+                }
+                <label htmlFor="CategorieProduct" className="form__label">Categoría</label>
+                {categoriaError && (<div className="invalid-feedback">{categoriaError}</div>)}
+              </div>
+
+              <div className="form__group field my-3">
+                <input
+                  type="text"
+                  id="SubCategorieProduct"
+                  value={formData.subcategoriaProducto}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      subcategoriaProducto: e.target.value,
+                    })
+                  }
+                  className="form__field"
+                  placeholder="Subcategoría de Producto"
+                  aria-label="Subcategoría de Producto"
+                  required
+                  style={{ color: '#000' }}
+                />
+                <label htmlFor="SubCategorieProduct" className="form__label">Subcategoría</label>
+                <div className="form-text" id="basic-addon4">
+                  Subcategoría no obligatoria
+                </div>
+              </div>
+
+              <div className="form__group field my-3">
+                {
+                  showMarca ? (
+                    <select
+                      id="MarcaProduct"
+                      value={formData.marcaProducto}
+                      onChange={handleMarcaChange}
+                      className={`form__field ${marcaError ? "is-invalid" : ""}`}
+                      placeholder="Marca del Producto"
+                      aria-label="Marca del Producto"
+                      required
+                      style={{ color: '#048c88' }}
+                    >
+                      <option value="">Selecciona una Marca</option>
+                      <option value="SIEMENS">SIEMENS</option>
+                      <option value="ABB">ABB</option>
+                      <option value="Electronicon">Electronicon</option>
+                      <option value="SIBA">SIBA</option>
+                      <option value="Selec">Selec</option>
+                      <option value="DataKom">DataKom</option>
+                      <option value="Little Fuse">Little Fuse</option>
+                      <option value="Otra Marca">Otra Marca</option>
+                    </select>
+                  ) : (
+                    <input type="text" id="CategorieProduct" value={""}
+                      onClick={handleShowMarca}
+                      className={`form__field ${showMarca ? "d-none" : ""}`}
+                      placeholder="Marca del Producto"
+                      aria-label="Marca del Producto" style={{ color: '#000' }}
+                    />
+                  )
+                }
+                <label htmlFor="MarcaProduct" className="form__label">Marca</label>
+                {marcaError && <div className="invalid-feedback">{marcaError}</div>}
+              </div>
+
+              <div className="input-group">
+                <span className="input-group-text">
+                  <b>Descripción</b>
+                </span>
+                <textarea
+                  className={`form-control ${descripcionError ? "is-invalid" : ""}`}
+                  aria-label="Descripción de Producto"
+                  placeholder="Descripción de Producto"
+                  value={formData.descripcionProducto}
+                  onChange={handleDescripcionChange}
+                  required
+                ></textarea>
+                {descripcionError && (
+                  <div className="invalid-feedback">{descripcionError}</div>
+                )}
+              </div>
+
+            </div>
+            {/* Fin Primera columna*/}
+
+
+            {/* Segunda columna*/}
+            <div className="col">
+
+              <div className="input-group mt-3">
+                <label className="input-group-text" htmlFor="inputGroupFile">
+                  <b>Imagen del Producto</b>
+                </label>
+                <input
+                  type="file"
+                  className={`form-control ${imageError ? "is-invalid" : ""}`}
+                  id="inputGroupFile"
+                  accept="image/*"
+                  onChange={(e) => handleFileChange(e)}
+                  required
+                  ref={(el) => (secondaryFileInputRef.current = el)}
+                />
+                {imageError && <div className="invalid-feedback">{imageError}</div>}
+              </div>
+
+              {/* Input para la imagen secundaria */}
+              <div className="input-group mt-3">
+                <label className="input-group-text" htmlFor="inputGroupFileSecondary">
+                  <b>Imagen Secundaria</b>
+                </label>
+                <input
+                  type="file"
+                  className={`form-control ${imageError ? "is-invalid" : ""}`}
+                  id="inputGroupFileSecondary"
+                  accept="image/*"
+                  onChange={(e) => handleFileChange(e, true)}
+                  ref={(el) => (fileInputRef.current = el)}
+                />
+                {imageError && <div className="invalid-feedback">{imageError}</div>}
+              </div>
+
+              {/* Input para el archivo PDF */}
+              <div className="input-group mt-3">
+                <label className="input-group-text" htmlFor="inputGroupFilePDF">
+                  <b>Archivo PDF (opcional)</b>
+                </label>
+                <input
+                  type="file"
+                  className={`form-control ${pdfError ? "is-invalid" : ""}`}
+                  id="inputGroupFilePDF"
+                  accept="application/pdf"
+                  onChange={(e) => handlePdfChange(e.target.files?.[0] ?? null)}
+                  ref={(el) => (pdfInputRef.current = el)}
+                />
+                {pdfError && <div className="invalid-feedback">{pdfError}</div>}
+              </div>
+            </div>
+            {/* Fin Segunda columna*/}
           </div>
-          <div className="form-text" id="basic-addon4">
-            Subcategoría no obligatoria
-          </div>
         </div>
 
-        <div className="input-group mb-3">
-          <span className="input-group-text">
-            <b>Marca</b>
-          </span>
-          <select
-            className={`form-select ${marcaError ? "is-invalid" : ""}`}
-            aria-label="Marca del Producto"
-            value={formData.marcaProducto}
-            onChange={handleMarcaChange}
-            required
-          >
-            <option value="">Selecciona una Marca</option>
-            <option value="SIEMENS">SIEMENS</option>
-            <option value="ABB">ABB</option>
-            <option value="Electronicon">Electronicon</option>
-            <option value="SIBA">SIBA</option>
-            <option value="Selec">Selec</option>
-            <option value="DataKom">DataKom</option>
-            <option value="Little Fuse">Little Fuse</option>
-            <option value="Otra Marca">Otra Marca</option>
-          </select>
-          {marcaError && <div className="invalid-feedback">{marcaError}</div>}
+        <div className="mt-3 d-grid justify-content-center">
+          <button id="bottone5" type="submit" disabled={isUploading}>{isUploading ? "Subiendo..." : "Agregar Producto"}</button>
         </div>
 
-        <div className="input-group">
-          <span className="input-group-text">
-            <b>Descripción</b>
-          </span>
-          <textarea
-            className={`form-control ${descripcionError ? "is-invalid" : ""}`}
-            aria-label="Descripción de Producto"
-            placeholder="Descripción de Producto"
-            value={formData.descripcionProducto}
-            onChange={handleDescripcionChange}
-            required
-          ></textarea>
-          {descripcionError && (
-            <div className="invalid-feedback">{descripcionError}</div>
-          )}
-        </div>
-        <div className="input-group mt-3">
-          <label className="input-group-text" htmlFor="inputGroupFile">
-            <b>Imagen del Producto</b>
-          </label>
-          <input
-            type="file"
-            className={`form-control ${imageError ? "is-invalid" : ""}`}
-            id="inputGroupFile"
-            accept="image/*"
-            onChange={(e) => handleFileChange(e)}
-            required
-            ref={(el) => (secondaryFileInputRef.current = el)}
-          />
-          {imageError && <div className="invalid-feedback">{imageError}</div>}
-        </div>
-        {/* Input para la imagen secundaria */}
-        <div className="input-group mt-3">
-          <label className="input-group-text" htmlFor="inputGroupFileSecondary">
-            <b>Imagen Secundaria</b>
-          </label>
-          <input
-            type="file"
-            className={`form-control ${imageError ? "is-invalid" : ""}`}
-            id="inputGroupFileSecondary"
-            accept="image/*"
-            onChange={(e) => handleFileChange(e, true)}
-            ref={(el) => (fileInputRef.current = el)}
-          />
-          {imageError && <div className="invalid-feedback">{imageError}</div>}
-        </div>
-        {/* Input para el archivo PDF */}
-        <div className="input-group mt-3">
-          <label className="input-group-text" htmlFor="inputGroupFilePDF">
-            <b>Archivo PDF (opcional)</b>
-          </label>
-          <input
-            type="file"
-            className={`form-control ${pdfError ? "is-invalid" : ""}`}
-            id="inputGroupFilePDF"
-            accept="application/pdf"
-            onChange={(e) => handlePdfChange(e.target.files?.[0] ?? null)}
-            ref={(el) => (pdfInputRef.current = el)}
-          />
-          {pdfError && <div className="invalid-feedback">{pdfError}</div>}
-        </div>
-        <div className="mt-3">
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={isUploading}
-          >
-            {isUploading ? "Subiendo..." : "Agregar Producto"}
-          </button>
-        </div>
         {uploadMessage && (
           <div className={`mt-3 ${isUploading ? "text-info" : "text-success"}`}>
             {uploadMessage}
           </div>
         )}
+
         {successMessageVisible && (
           <div className={`mt-3 text-success`}>Subida Exitosa</div>
         )}
+
       </form>
-    </>
+    </div>
   );
 };
