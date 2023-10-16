@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ProductForm } from "./Components/ProductForm";
-import { LoginAdmin } from "./pages/LoginAdmin";
-import { ProductsAdmin } from "./pages/ProductsAdmin";
+import { ProductForm } from "./Components";
+import { LoginAdmin, ProductsAdmin } from "./pages";
+
 function App() {
   return (
     <>
@@ -9,9 +9,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginAdmin />} />
           <Route path="/admin/add-product" element={<ProductForm />} />
-          <Route path= "/admin/products" element = {<ProductsAdmin/>} />
-          
-          
+          <Route path="/admin/products" element={<ProductsAdmin />} />
         </Routes>
       </BrowserRouter>
     </>

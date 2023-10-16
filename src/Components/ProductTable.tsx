@@ -52,7 +52,11 @@ export const ProductTable = () => {
               {productos.map((producto) => (
                 <tr key={producto.id}>
                   <td>{producto.nombreProducto}</td>
-                  <td>{producto.descripcionProducto}</td>
+                  <td className="descripcion">
+                    {producto.descripcionProducto.length > 30
+                      ? producto.descripcionProducto.slice(0, 30) + "..."
+                      : producto.descripcionProducto}
+                  </td>
                   <td>{producto.marcaProducto}</td>
                   <td>{producto.categoriaProducto}</td>
                   <td>{producto.subcategoriaProducto}</td>

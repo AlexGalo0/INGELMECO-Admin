@@ -93,7 +93,7 @@ export const ProductForm = () => {
   return (
     <>
     
-      <h1>Agregar Producto</h1>
+      <h1 style={{color:"white"}}>Agregar Producto</h1>
       <form onSubmit={handleSubmit}>
         <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">
