@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ProductForm } from "./Components";
-import { LoginAdmin, ProductsAdmin } from "./pages";
+import { LoginAdmin, ProductsAdmin, FormProductsAdmin } from "./pages";
 
 function App() {
   return (
@@ -8,7 +7,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginAdmin />} />
-          <Route path="/admin/add-product" element={<ProductForm />} />
+          <Route path="/admin/add-product" element={<FormProductsAdmin />} />
           <Route path="/admin/products" element={<ProductsAdmin />} />
         </Routes>
       </BrowserRouter>

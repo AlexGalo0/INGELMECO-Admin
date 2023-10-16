@@ -281,6 +281,7 @@ export const ProductForm = () => {
                 <label className="input-group-text" htmlFor="inputGroupFileSecondary">
                   <b>Imagen Secundaria</b>
                 </label>
+                
                 <input
                   type="file"
                   className={`form-control ${imageError ? "is-invalid" : ""}`}
@@ -289,13 +290,17 @@ export const ProductForm = () => {
                   onChange={(e) => handleFileChange(e, true)}
                   ref={(el) => (fileInputRef.current = el)}
                 />
+                
                 {imageError && <div className="invalid-feedback">{imageError}</div>}
               </div>
 
+              <div className="form-text" id="basic-addon4">
+                  Imagen Secundaria no obligatoria
+                </div>
               {/* Input para el archivo PDF */}
               <div className="input-group mt-3">
                 <label className="input-group-text" htmlFor="inputGroupFilePDF">
-                  <b>Archivo PDF (opcional)</b>
+                  <b>Archivo PDF</b>
                 </label>
                 <input
                   type="file"
@@ -307,6 +312,9 @@ export const ProductForm = () => {
                 />
                 {pdfError && <div className="invalid-feedback">{pdfError}</div>}
               </div>
+              <div className="form-text" id="basic-addon4">
+                  Archivo PDF no obligatorio
+                </div>
             </div>
             {/* Fin Segunda columna*/}
           </div>

@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
-
+import { Link, useLocation   } from "react-router-dom";
+import { useEffect  , useState} from "react";
 export const Sidebar = () => {
+const [] = useState(false)
   return (
     <div className="sidebar d-flex flex-column">
       <div className="image-container pt-5">
@@ -21,12 +22,18 @@ export const Sidebar = () => {
                 alt="Ícono de Producto"
               />
             </div>
-            <Link
-              to="/admin/add-product"
-              className="menu-link-bold small-text"
-            >
-              Agregar Producto
-            </Link>
+            {
+              useLocation().pathname === "/admin/products" ? (
+                <Link to="/admin/add-product" className="menu-link-bold small-text">
+                 Agregar Producto
+              </Link>
+              ) : (
+                <Link to="/admin/products" className="menu-link-bold small-text">
+                  Ver Productos
+                </Link>
+              )
+            }
+           
           </li>
         </ul>
       </div>
