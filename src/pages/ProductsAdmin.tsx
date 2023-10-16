@@ -1,10 +1,11 @@
-import { ProductTable } from "../Components";
-import { Sidebar } from "../Components/Sidebar";
+import { ProductTable, Sidebar } from "../Components";
 export const ProductsAdmin = () => {
   return (
     <div className="container-sidebar">
       <Sidebar />
-      <ProductTable />
+      <div className="product-table-container">
+        <ProductTable />
+      </div>
     </div>
   );
 };

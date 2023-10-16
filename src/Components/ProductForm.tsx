@@ -24,6 +24,8 @@ export const ProductForm = () => {
   const [fileSecondary, setFileSecondary] = useState<File | null>(null);
   const [marcaError] = useState<string | null>(null);
 
+  console.log(fileSecondary);
+
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     isSecondary: boolean = false
@@ -93,23 +95,9 @@ export const ProductForm = () => {
   };
 
   return (
-    <div className="mx-5">
-      <h1 className="text-light">Agregar Producto</h1>
-      <form onSubmit={handleSubmit} className="w-50">
-
-        <div className="form__group field my-3">
-          <input
-            type="email"
-            id="email"
-            className="form__field"
-            value={formData.nombreProducto}
-            onChange={handleNombreChange}
-            placeholder="email"
-            required
-          />
-          <label htmlFor="email" className="form__label">Nombre del Producto</label>
-        </div>
-
+    <>
+      <h1 style={{color:"white"}}>Agregar Producto</h1>
+      <form onSubmit={handleSubmit}>
         <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">
             <b>Nombre de Producto</b>
@@ -264,7 +252,7 @@ export const ProductForm = () => {
             className={`form-control ${pdfError ? "is-invalid" : ""}`}
             id="inputGroupFilePDF"
             accept="application/pdf"
-            onChange={(e) => handlePdfChange(e.target.files?.[0])}
+            onChange={(e) => handlePdfChange(e.target.files?.[0] ?? null)}
             ref={(el) => (pdfInputRef.current = el)}
           />
           {pdfError && <div className="invalid-feedback">{pdfError}</div>}
@@ -287,6 +275,6 @@ export const ProductForm = () => {
           <div className={`mt-3 text-success`}>Subida Exitosa</div>
         )}
       </form>
-    </div>
+    </>
   );
 };
