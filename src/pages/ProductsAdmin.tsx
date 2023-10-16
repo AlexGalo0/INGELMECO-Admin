@@ -3,7 +3,9 @@ export const ProductsAdmin = () => {
   return (
     <div className="container-sidebar">
       <Sidebar />
-      <ProductTable />
+      <div className="product-table-container">
+        <ProductTable />
+      </div>
     </div>
   );
 };

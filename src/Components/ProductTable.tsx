@@ -35,44 +35,45 @@ export const ProductTable = () => {
         <p>Cargando productos...</p>
       ) : (
         <div className="product-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Descripción</th>
-              <th>Marca</th>
-              <th>Categoria</th>
-              <th>SubCategoria</th>
-              <th>Borrar</th>
-            </tr>
-          </thead>
-          <tbody>
-            {productos.map((producto) => (
-              <tr key={producto.id}>
-                <td>{producto.nombreProducto}</td>
-                <td>{producto.descripcionProducto}</td>
-                <td>{producto.marcaProducto}</td>
-                <td>{producto.categoriaProducto}</td>
-                <td>{producto.subcategoriaProducto}</td>
+          <table className="table table-bordered table-hover">
+            <caption>Lista de Productos</caption>
+            <thead>
+              <tr>
+                <th>Nombre de Producto</th>
+                <th>Descripción</th>
+                <th>Marca</th>
+                <th>Categoria</th>
+                <th>SubCategoria</th>
 
-                <td>
-                  <button
-                    onClick={() =>
-                      handleDelete(
-                        producto.id,
-                        producto.imageName,
-                        producto.imageNameSecondary,
-                        producto.pdfName
-                      )
-                    }
-                  >
-                    Borrar
-                  </button>
-                </td>
+                <th>¿Deseas Borrarlo?</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {productos.map((producto) => (
+                <tr key={producto.id}>
+                  <td>{producto.nombreProducto}</td>
+                  <td>{producto.descripcionProducto}</td>
+                  <td>{producto.marcaProducto}</td>
+                  <td>{producto.categoriaProducto}</td>
+                  <td>{producto.subcategoriaProducto}</td>
+                  <td>
+                    <button
+                      onClick={() =>
+                        handleDelete(
+                          producto.id,
+                          producto.imageName,
+                          producto.imageNameSecondary,
+                          producto.pdfName
+                        )
+                      }
+                    >
+                      Borrar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>

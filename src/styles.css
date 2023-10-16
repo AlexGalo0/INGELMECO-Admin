@@ -371,3 +371,8 @@ background-color: #FFFFFF;
     font-size: 15px; /* Ajusta el tamaño de la fuente según tus preferencias */
     padding-right:30px;
   }
+
+  .product-table-container {
+    margin-left: 200px; 
+    margin-top: 100px;
+  }
