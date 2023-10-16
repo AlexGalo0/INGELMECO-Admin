@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface ProductFormData {
   nombreProducto: string;
   categoriaProducto: string;
@@ -7,3 +9,14 @@ export interface ProductFormData {
   imageName: string;
 
 }
+
+export type User = {
+  login: boolean;
+};
+
+export type AuthContextType = {
+  user: User;
+};
+export type AuthProviderProps = {
+  children: ReactNode;
+};

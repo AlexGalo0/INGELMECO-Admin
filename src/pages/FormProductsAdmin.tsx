@@ -1,13 +1,10 @@
-import { ProductForm, Sidebar } from "../Components"
+import { ProductForm, Sidebar } from "../Components";
 
 export const FormProductsAdmin = () => {
   return (
     <div>
-        <Sidebar />
-        <ProductForm />
-
-
-
+      <Sidebar />
+      <ProductForm />
     </div>
-  )
-}
+  );
+};

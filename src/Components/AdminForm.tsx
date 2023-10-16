@@ -1,7 +1,7 @@
 import { auth } from "../config/firebase.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAdminForm } from "../hooks/useAdminForm.js";
-
+import {useAuth} from '../hooks/useAuth.js'
 export const AdminForm = () => {
   const {
     email,
@@ -14,6 +14,9 @@ export const AdminForm = () => {
     handleError,
     handleSuccess,
   } = useAdminForm();
+
+  const authContext  = useAuth()
+  console.log(authContext);
 
   const handleAdminLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,41 +47,49 @@ export const AdminForm = () => {
     <div className="col-sm-6 form">
       <div className="form-peice">
         <form onSubmit={handleAdminLogin}>
-
-          <img className="img-fluid pb-4" src="src\assets\logo.png" alt="Logo Ingemeco img" />
-
+          <img
+            className="img-fluid pb-4"
+            src="src\assets\logo.png"
+            alt="Logo Ingemeco img"
+          />
 
           <div className="form__group field my-3">
-            <input 
+            <input
               type="email"
               id="email"
               className="form__field"
               value={email}
               onChange={(e) => handleEmailChange(e.target.value)}
-              placeholder="email" 
-              required 
+              placeholder="email"
+              required
             />
-            <label htmlFor="email" className="form__label">Correo Electrónico</label>
+            <label htmlFor="email" className="form__label">
+              Correo Electrónico
+            </label>
           </div>
 
           <div className="form__group field my-3">
-            <input 
+            <input
               type="password"
               id="password"
               className="form__field"
               value={password}
               onChange={(e) => handlePasswordChange(e.target.value)}
-              placeholder="email" 
-              required 
+              placeholder="email"
+              required
             />
-            <label htmlFor="email" className="form__label">Constraseña</label>
+            <label htmlFor="email" className="form__label">
+              Constraseña
+            </label>
           </div>
 
           <div className="d-grid justify-content-center py-4">
             {/* <button type="submit" className="btn btn-primary">
               Iniciar Sesión
             </button> */}
-            <button id="bottone5" type="submit">Iniciar Sesión</button>
+            <button id="bottone5" type="submit">
+              Iniciar Sesión
+            </button>
           </div>
 
           {success && (
@@ -92,7 +103,6 @@ export const AdminForm = () => {
               <span>Correo o Contraseña Incorrecta</span>
             </div>
           )}
-
         </form>
       </div>
     </div>
