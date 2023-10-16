@@ -52,14 +52,20 @@ export const ProductTable = () => {
               {productos.map((producto) => (
                 <tr key={producto.id}>
                   <td>{producto.nombreProducto}</td>
+                  
                   <td className="descripcion">
-                    {producto.descripcionProducto.length > 30
-                      ? producto.descripcionProducto.slice(0, 30) + "..."
+                    {producto.descripcionProducto.length > 15
+                      ? producto.descripcionProducto.slice(0, 15) + "..."
                       : producto.descripcionProducto}
                   </td>
                   <td>{producto.marcaProducto}</td>
                   <td>{producto.categoriaProducto}</td>
-                  <td>{producto.subcategoriaProducto}</td>
+                  
+                  <td className="descripcion">
+                    {producto.subcategoriaProducto.length > 14
+                      ? producto.subcategoriaProducto.slice(0, 14) + "..."
+                      : producto.subcategoriaProducto}
+                  </td>
                   <td>
                     <button
                       onClick={() =>
