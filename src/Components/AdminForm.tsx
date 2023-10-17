@@ -1,6 +1,7 @@
 import { auth } from "../config/firebase.js";
-import { signInWithEmailAndPassword  } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAdminForm } from "../hooks/useAdminForm.js";
+import { useAuth } from "../context/AuthContext.js";
 
 export const AdminForm = () => {
   const {
@@ -15,6 +16,8 @@ export const AdminForm = () => {
     handleSuccess,
   } = useAdminForm();
 
+  const { login } = useAuth();
+
   const handleAdminLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
@@ -26,6 +29,7 @@ export const AdminForm = () => {
     }
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
+        login(); //Para actualizar el contexto de autenticación
         handleSuccess(true);
         setTimeout(() => {
           navigate("/admin/add-product");
