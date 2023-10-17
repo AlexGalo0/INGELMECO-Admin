@@ -1,10 +1,11 @@
-import { createContext, useContext,  useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-export const authContext = createContext();
+import { createContext, useContext, useState, useEffect } from "react";
+import { onAuthStateChanged, signOut , signInWithEmailAndPassword} from "firebase/auth";
 import { ReactNode } from "react";
+import { auth } from "../config/firebase";
+export const authContext = createContext();
 interface AuthProviderProps {
-    children: ReactNode;
-  }
+  children: ReactNode;
+}
 export const useAuth = () => {
   const context = useContext(authContext);
   if (!context) {
@@ -13,19 +14,28 @@ export const useAuth = () => {
   return context;
 };
 
+
+
+
+
 export function AuthProvider({ children }: AuthProviderProps) {
-    const [user, setUser] = useState<{ login: boolean } | null>(null);
-
-
-    const login = () => {
-    
-      setUser({ login: true }); // Actualiza el usuario cuando inicia sesión
-    };
-  
-    const logout = () => {
-      setUser({login:false}); // Actualiza el usuario cuando cierra sesión
-    };
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const login = (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password);
+  };
+  const logout = () => signOut(auth);
+  useEffect(() => {
+    const unsubuscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log({ currentUser });
+      setUser(currentUser);
+      setLoading(false);
+    });
+    return () => unsubuscribe();
+  }, []);
   return (
-    <authContext.Provider value={{ user  , login , logout}}>{children}</authContext.Provider>
+    <authContext.Provider value={{ user, login, logout , loading}}>
+      {children}
+    </authContext.Provider>
   );
 }

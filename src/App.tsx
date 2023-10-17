@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LoginAdmin, ProductsAdmin, FormProductsAdmin } from "./pages";
 import { AuthProvider } from "./context/AuthContext";
-import ProtectedRoute from "./Components/ProtectedRoute";
+import { ProtectedRoute } from "./Components/ProtectedRoute";
+
 function App() {
   return (
     <BrowserRouter>
@@ -9,15 +10,22 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginAdmin />} />
           <Route
-            path="/admin/add-product"
-            element={<ProtectedRoute element={<FormProductsAdmin />} />}
-            // Usa ProtectedRoute para proteger esta ruta
+            path="admin/add-product"
+            element={
+              <ProtectedRoute>
+                <FormProductsAdmin />
+              </ProtectedRoute>
+            }
           />
-          <Route
+           <Route
             path="/admin/products"
-            element={<ProtectedRoute element={<ProductsAdmin />} />}
-            // Usa ProtectedRoute para proteger esta ruta
+            element={
+              <ProtectedRoute>
+                <ProductsAdmin />
+              </ProtectedRoute>
+            }
           />
+          
         </Routes>
       </AuthProvider>
     </BrowserRouter>

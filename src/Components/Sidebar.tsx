@@ -1,6 +1,15 @@
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export const Sidebar = () => {
+  const { logout } = useAuth();
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
   return (
     <div className="sidebar d-flex flex-column">
       <div className="image-container pt-5">
@@ -47,7 +56,7 @@ export const Sidebar = () => {
                 alt="Ícono de Cerrar Sesión"
               />
             </div>
-            <span className="menu-link-bold small-text">Cerrar Sesión</span>
+            <button className="menu-link-bold small-text" onClick={handleLogout}>Cerrar Sesión</button>
           </li>
         </ul>
       </div>
