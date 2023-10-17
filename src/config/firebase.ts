@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import {getFirestore} from 'firebase/firestore'
+import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -13,7 +13,7 @@ const firebaseConfig = {
   projectId: "test-admin-app-1cb81",
   storageBucket: "test-admin-app-1cb81.appspot.com",
   messagingSenderId: "832034090698",
-  appId: "1:832034090698:web:974505253806289bdb8e33"
+  appId: "1:832034090698:web:974505253806289bdb8e33",
 };
 
 // Initialize Firebase

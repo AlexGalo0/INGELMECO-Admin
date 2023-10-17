@@ -1,9 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 
-
 export const Sidebar = () => {
-
-
   return (
     <div className="sidebar d-flex flex-column">
       <div className="image-container pt-5">
@@ -50,9 +47,7 @@ export const Sidebar = () => {
                 alt="Ícono de Cerrar Sesión"
               />
             </div>
-            <span className="menu-link-bold small-text">
-              Cerrar Sesión
-            </span>
+            <span className="menu-link-bold small-text">Cerrar Sesión</span>
           </li>
         </ul>
       </div>

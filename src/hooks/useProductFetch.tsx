@@ -15,7 +15,7 @@ export const useProductFetch = () => {
         id: doc.id,
       }));
       setProductos(newData);
-      console.log(newData);
+ 
       setLoading(false);
     } catch (error) {
       // Maneja errores aquí si es necesario

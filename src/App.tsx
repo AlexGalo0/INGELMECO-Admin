@@ -1,36 +1,25 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LoginAdmin, ProductsAdmin, FormProductsAdmin } from "./pages";
-// Asegúrate de importar correctamente AuthProvider
-
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./Components/ProtectedRoute";
 function App() {
   return (
     <BrowserRouter>
-
+      <AuthProvider>
         <Routes>
-          {/* Ruta de inicio de sesión */}
           <Route path="/" element={<LoginAdmin />} />
-
-          {/* Ruta protegida: agregar producto */}
           <Route
             path="/admin/add-product"
-            element={
-             
-                <FormProductsAdmin />
-            
-            }
+            element={<ProtectedRoute element={<FormProductsAdmin />} />}
+            // Usa ProtectedRoute para proteger esta ruta
           />
-
-          {/* Ruta protegida: lista de productos */}
           <Route
             path="/admin/products"
-            element={
-             
-                <ProductsAdmin />
-           
-            }
+            element={<ProtectedRoute element={<ProductsAdmin />} />}
+            // Usa ProtectedRoute para proteger esta ruta
           />
         </Routes>
-    
+      </AuthProvider>
     </BrowserRouter>
   );
 }
