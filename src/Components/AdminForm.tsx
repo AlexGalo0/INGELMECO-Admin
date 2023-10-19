@@ -27,7 +27,6 @@ export const AdminForm = () => {
     }
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-       
         handleSuccess(true);
         setTimeout(() => {
           navigate("/admin/add-product");
@@ -83,9 +82,6 @@ export const AdminForm = () => {
           </div>
 
           <div className="d-grid justify-content-center py-4">
-            {/* <button type="submit" className="btn btn-primary">
-              Iniciar Sesión
-            </button> */}
             <button id="bottone5" type="submit">
               Iniciar Sesión
             </button>

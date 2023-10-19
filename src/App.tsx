@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { LoginAdmin, ProductsAdmin, FormProductsAdmin } from "./pages";
+import { LoginAdmin, FormProductsAdmin } from "./pages";
 import { AuthProvider } from "./context/AuthContext";
 import { ProtectedRoute } from "./Components/ProtectedRoute";
+import { ProductForm, ProductTable } from "./Components";
 
 function App() {
   return (
@@ -9,23 +10,12 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/" element={<LoginAdmin />} />
-          <Route
-            path="admin/add-product"
-            element={
-              <ProtectedRoute>
-                <FormProductsAdmin />
-              </ProtectedRoute>
-            }
-          />
-           <Route
-            path="/admin/products"
-            element={
-              <ProtectedRoute>
-                <ProductsAdmin />
-              </ProtectedRoute>
-            }
-          />
-          
+
+          <Route path="admin" element={<ProtectedRoute><FormProductsAdmin /></ProtectedRoute>}>
+            <Route path="add-product" element={<ProductForm />} />
+            <Route path="products" element={<ProductTable />} />
+          </Route>
+
         </Routes>
       </AuthProvider>
     </BrowserRouter>

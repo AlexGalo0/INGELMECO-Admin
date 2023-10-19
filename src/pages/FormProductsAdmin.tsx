@@ -1,10 +1,22 @@
-import { ProductForm, Sidebar } from "../Components";
+import { Outlet } from "react-router-dom";
+import { Sidebar } from "../Components";
 
 export const FormProductsAdmin = () => {
+
   return (
-    <div>
+    <div className="container-fluid">
+      <div className="p-2">
+        <button className="bg-transparent border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+          <img
+            className="img-fluid"
+            src="../src/assets/logo.png"
+            alt="Logo Ingelmeco img"
+            style={{ width: "170px" }}
+          />
+        </button>
+      </div>
       <Sidebar />
-      <ProductForm />
+      <Outlet />
     </div>
   );
 };

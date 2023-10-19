@@ -1,5 +1,5 @@
 import { useProductForm } from "../hooks/useProductForm";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export const ProductForm = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -23,8 +23,6 @@ export const ProductForm = () => {
   const [categoriaError, setCategoriaError] = useState<string | null>(null);
   const [fileSecondary, setFileSecondary] = useState<File | null>(null);
   const [marcaError, setMarcaError] = useState<string | null>(null);
-
-  console.log(fileSecondary);
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -112,8 +110,12 @@ export const ProductForm = () => {
     setShowMarca(!showMarca);
   }
 
+  useEffect(() => {
+    console.log(fileSecondary);
+  });
+
   return (
-    <div className="m-4 rounded-4" style={{ backgroundColor: '#DDD', height: '600px' }}>
+    <div className="m-4 rounded-4 h-100" style={{ backgroundColor: '#DDD', height: '600px' }}>
 
       <p className="fw-bold m-0 px-5 pt-3" style={{ color: '#000' }}>Registrar producto</p>
 
@@ -145,8 +147,8 @@ export const ProductForm = () => {
                   showCategories ? (
                     <select
                       id="CategorieProduct"
-                      value={formData.categoriaProducto}
                       onChange={handleCategoriaChange}
+                      value={formData.categoriaProducto}
                       className={`form__field ${categoriaError ? "is-invalid" : ""}`}
                       placeholder="Categoría del Producto"
                       aria-label="Categoría del Producto"
@@ -165,7 +167,7 @@ export const ProductForm = () => {
                       <option value="Arrancador de Estado Sólido">Arrancador de Estado Sólido</option>
                     </select>
                   ) : (
-                    <input type="text" id="CategorieProduct" value={""}
+                    <input type="text" id="CategorieProduct"
                       onClick={handleShowCategories}
                       className={`form__field ${showCategories ? "d-none" : ""}`}
                       placeholder="Categoría del Producto"
@@ -205,8 +207,8 @@ export const ProductForm = () => {
                   showMarca ? (
                     <select
                       id="MarcaProduct"
-                      value={formData.marcaProducto}
                       onChange={handleMarcaChange}
+                      value={formData.marcaProducto}
                       className={`form__field ${marcaError ? "is-invalid" : ""}`}
                       placeholder="Marca del Producto"
                       aria-label="Marca del Producto"
@@ -224,7 +226,7 @@ export const ProductForm = () => {
                       <option value="Otra Marca">Otra Marca</option>
                     </select>
                   ) : (
-                    <input type="text" id="CategorieProduct" value={""}
+                    <input type="text" id="CategorieProduct"
                       onClick={handleShowMarca}
                       className={`form__field ${showMarca ? "d-none" : ""}`}
                       placeholder="Marca del Producto"
@@ -248,9 +250,7 @@ export const ProductForm = () => {
                   onChange={handleDescripcionChange}
                   required
                 ></textarea>
-                {descripcionError && (
-                  <div className="invalid-feedback">{descripcionError}</div>
-                )}
+                {descripcionError && (<div className="invalid-feedback">{descripcionError}</div>)}
               </div>
 
             </div>
@@ -259,6 +259,19 @@ export const ProductForm = () => {
 
             {/* Segunda columna*/}
             <div className="col">
+
+              <div className="m-3 d-flex justify-content-center">
+                <label
+                  className="d-flex flex-column gap-4 align-items-center justify-content-center p-3 rounded-4"
+                  style={{ height: '200px', width: '200px', cursor: 'pointer', backgroundColor: '#202020'}} htmlFor="file"
+                >
+                  <div className="d-flex flex-column align-items-center justify-content-center">
+                    <img className="h-50 img-fluid" src="../src/assets/img.png" alt="img" />
+                    <span style={{ fontWeight: '400', color: '#FFF' }}>Click para subir imagen</span>
+                  </div>
+                  <input className="d-none" type="file" id="file" />
+                </label>
+              </div>
 
               <div className="input-group mt-3">
                 <label className="input-group-text" htmlFor="inputGroupFile">
@@ -281,7 +294,7 @@ export const ProductForm = () => {
                 <label className="input-group-text" htmlFor="inputGroupFileSecondary">
                   <b>Imagen Secundaria</b>
                 </label>
-                
+
                 <input
                   type="file"
                   className={`form-control ${imageError ? "is-invalid" : ""}`}
@@ -290,13 +303,13 @@ export const ProductForm = () => {
                   onChange={(e) => handleFileChange(e, true)}
                   ref={(el) => (fileInputRef.current = el)}
                 />
-                
+
                 {imageError && <div className="invalid-feedback">{imageError}</div>}
               </div>
 
               <div className="form-text" id="basic-addon4">
-                  Imagen Secundaria no obligatoria
-                </div>
+                Imagen Secundaria no obligatoria
+              </div>
               {/* Input para el archivo PDF */}
               <div className="input-group mt-3">
                 <label className="input-group-text" htmlFor="inputGroupFilePDF">
@@ -313,8 +326,8 @@ export const ProductForm = () => {
                 {pdfError && <div className="invalid-feedback">{pdfError}</div>}
               </div>
               <div className="form-text" id="basic-addon4">
-                  Archivo PDF no obligatorio
-                </div>
+                Archivo PDF no obligatorio
+              </div>
             </div>
             {/* Fin Segunda columna*/}
           </div>

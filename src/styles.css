@@ -236,6 +236,10 @@ section#formHolder {
     transform: translateY(0);
 }
 
+.offcanvas.offcanvas-start {
+    width: 300px;
+}
+
 @media (max-width: 768px) {
     .container {
         overflow: hidden;
