@@ -73,10 +73,10 @@ export const AdminForm = () => {
               className="form__field"
               value={password}
               onChange={(e) => handlePasswordChange(e.target.value)}
-              placeholder="email"
+              placeholder="password"
               required
             />
-            <label htmlFor="email" className="form__label">
+            <label htmlFor="password" className="form__label">
               Contraseña
             </label>
           </div>

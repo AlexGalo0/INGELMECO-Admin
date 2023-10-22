@@ -148,6 +148,7 @@ export const useProductForm = (
         setFileSecondary(null);
         setPdfFile(null); // Limpiar el estado del archivo PDF
       } catch (error) {
+        console.log(error);
         setUploadMessage("Error al subir el producto.");
         setIsUploading(false);
       }

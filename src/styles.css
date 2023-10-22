@@ -29,6 +29,15 @@ input {
     outline: none !important;
 }
 
+/*ocultar el texto por defecto de los inputs tipo "file" que dice "seleccione un archivo"*/
+input[type="file"] {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    outline: none !important;
+    
+}
+
 h1 {
     text-align: center;
     text-transform: uppercase;

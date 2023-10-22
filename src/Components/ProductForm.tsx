@@ -2,6 +2,7 @@ import { useProductForm } from "../hooks/useProductForm";
 import { useState, useRef, useEffect } from "react";
 
 export const ProductForm = () => {
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const secondaryFileInputRef = useRef<HTMLInputElement | null>(null);
   const pdfInputRef = useRef<HTMLInputElement | null>(null); // Referencia al input de PDF
@@ -24,6 +25,9 @@ export const ProductForm = () => {
   const [fileSecondary, setFileSecondary] = useState<File | null>(null);
   const [marcaError, setMarcaError] = useState<string | null>(null);
 
+  const [imagePrimary, setImagePrimary] = useState<File | null>(null);
+  const [imageSecondary, setImageSecondary] = useState<File | null>(null);
+
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     isSecondary: boolean = false
@@ -33,8 +37,12 @@ export const ProductForm = () => {
       setImageError(null);
       handleImageChange(selectedFile, isSecondary);
 
+      if (!isSecondary) {
+        setImagePrimary(selectedFile);
+      }
       if (isSecondary) {
         setFileSecondary(selectedFile);
+        setImageSecondary(selectedFile);
       }
     } else {
       setImageError("Selecciona una imagen");
@@ -120,8 +128,19 @@ export const ProductForm = () => {
   }
 
   useEffect(() => {
-    console.log(fileSecondary);
-  });
+  }, [fileSecondary]);
+
+  const handleRemoveImagePrimary = () => {
+    if (imagePrimary) {
+      setImagePrimary(null);
+    }
+  };
+
+  const handleRemoveImageSecondary = () => {
+    if (imageSecondary) {
+      setImageSecondary(null);
+    }
+  };
 
   return (
     <div className="m-4 rounded-4 h-100" style={{ backgroundColor: '#DDD', height: '600px' }}>
@@ -145,7 +164,7 @@ export const ProductForm = () => {
                   placeholder="Nombre del Producto"
                   aria-label="Nombre del Producto"
                   required
-                  style={{ color: '#000' }}
+                  style={{ color: '#048c88' }}
                 />
                 <label htmlFor="NameProduct" className="form__label">Nombre del Producto</label>
                 {nombreError && <div className="invalid-feedback">{nombreError}</div>}
@@ -203,7 +222,7 @@ export const ProductForm = () => {
                   placeholder="Subcategoría de Producto"
                   aria-label="Subcategoría de Producto"
                   required
-                  style={{ color: '#000' }}
+                  style={{ color: '#048c88' }}
                 />
                 <label htmlFor="SubCategorieProduct" className="form__label">Subcategoría</label>
                 <div className="form-text" id="basic-addon4">
@@ -262,9 +281,9 @@ export const ProductForm = () => {
                   ) : (
                     <input type="text" id="DescriptionProduct"
                       onClick={handleShowDescripcion}
-                      className={`form__field ${showCategories ? "d-none" : ""}`}
+                      className={`form__field ${showDescripcion ? "d-none" : ""}`}
                       placeholder="Descripción del Producto"
-                      aria-label="Descripción del Producto" style={{ color: '#000' }}
+                      aria-label="Descripción del Producto" style={{ color: '#048c88' }}
                     />
                   )
                 }
@@ -277,59 +296,119 @@ export const ProductForm = () => {
 
             {/* Segunda columna*/}
             <div className="col">
-
               <div className="d-flex">
-
-                <div className="m-3 d-flex justify-content-center">
-                  <label
-                    className="d-flex flex-column gap-4 align-items-center justify-content-center p-3 rounded-4"
-                    style={{ height: '200px', width: '200px', cursor: 'pointer', backgroundColor: '#202020' }} htmlFor="file"
-                  >
-                    <div className="d-flex flex-column align-items-center justify-content-center">
-                      <img className="h-50 img-fluid" src="../src/assets/img.png" alt="img" />
-                      <span style={{ fontWeight: '400', color: '#FFF' }}>Click para subir imagen</span>
-                    </div>
-                    <input
-                      className={`d-none ${imageError ? "is-invalid" : ""}`}
-                      type="file"
-                      id="inputGroupFile"
-                      accept="image/*"
-                      onChange={(e) => handleFileChange(e)}
-                      required
-                      ref={(el) => (secondaryFileInputRef.current = el)}
-                    />
-                  </label>
-                  {imageError && <div className="invalid-feedback">{imageError}</div>}
-                </div>
-
-                <div className="m-3 d-flex flex-column justify-content-center align-items-center">
-                  <label
-                    className="d-flex flex-column gap-4 align-items-center justify-content-center p-3 rounded-4"
-                    style={{ height: '200px', width: '200px', cursor: 'pointer', backgroundColor: '#202020' }} htmlFor="file"
-                  >
-                    <div className="d-flex flex-column align-items-center justify-content-center">
-                      <img className="h-50 img-fluid" src="../src/assets/img.png" alt="img" />
-                      <span style={{ fontWeight: '400', color: '#FFF' }}>Click para subir imagen</span>
-                    </div>
-                    <input
-                      className={`d-none ${imageError ? "is-invalid" : ""}`}
-                      type="file"
-                      id="inputGroupFileSecondary"
-                      accept="image/*"
-                      onChange={(e) => handleFileChange(e, true)}
-                      required
-                      ref={(el) => (fileInputRef.current = el)}
-                    />
-                  </label>
-                  {imageError && <div className="invalid-feedback">{imageError}</div>}
-                  <div className="form-text" id="basic-addon4">
-                    Imagen Secundaria no obligatoria
+                {
+                  !imagePrimary && 
+                  <div className="m-3 d-flex justify-content-center">
+                    <label
+                      className="d-flex flex-column gap-4 align-items-center justify-content-center p-3 rounded-4"
+                      style={{ height: '200px', width: '200px', cursor: 'pointer', backgroundColor: '#202020' }} htmlFor="inputGroupFile"
+                    >
+                      <div className="d-flex flex-column align-items-center justify-content-center">
+                        <img className="h-50 img-fluid" src="../src/assets/img.png" alt="img" />
+                        <span style={{ fontWeight: '400', color: '#FFF' }}>Click para subir imagen</span>
+                      </div>
+                      <input
+                        type="file"
+                        className={`d-none ${imageError ? "is-invalid" : ""}`}
+                        id="inputGroupFile"
+                        accept="image/*"
+                        onChange={(e) => handleFileChange(e)}
+                        required
+                        ref={(el) => (secondaryFileInputRef.current = el)}
+                      />
+                    </label>
+                    {imageError && <div className="invalid-feedback">{imageError}</div>}
                   </div>
-                </div>
+                }
+                {
+                  imagePrimary && 
+                  <div className="m-3 d-flex justify-content-center">
+                    <label
+                      className="d-flex flex-column gap-4 align-items-center justify-content-center p-3 rounded-4"
+                      style={{ height: '200px', width: '200px', cursor: 'pointer', backgroundColor: '#202020' }} htmlFor="viewImg"
+                    >
+                      <div className="d-flex flex-column justify-content-between align-items-center w-100 h-100">
+                        <img className="w-75 img-fluid" src={URL.createObjectURL(imagePrimary)} alt="img" />
+                        <button onClick={handleRemoveImagePrimary} className="btn btn-danger mt-3">Eliminar</button>
+                      </div>
+                    </label>
+                  </div>
+                }
+
+                {
+                  !imageSecondary && 
+                  <div className="m-3 d-flex flex-column justify-content-center align-items-center">
+                    <label
+                      className="d-flex flex-column gap-4 align-items-center justify-content-center p-3 rounded-4"
+                      style={{ height: '200px', width: '200px', cursor: 'pointer', backgroundColor: '#202020' }} htmlFor="inputGroupFileSecondary"
+                    >
+                      <div className="d-flex flex-column align-items-center justify-content-center">
+                        <img className="h-50 img-fluid" src="../src/assets/img.png" alt="img" />
+                        <span style={{ fontWeight: '400', color: '#FFF' }}>Click para subir imagen</span>
+                      </div>
+                      <input
+                        type="file"
+                        className={`d-none ${imageError ? "is-invalid" : ""}`}
+                        id="inputGroupFileSecondary"
+                        accept="image/*"
+                        onChange={(e) => handleFileChange(e, true)}
+                        ref={(el) => (fileInputRef.current = el)}
+                      />
+                    </label>
+                    {imageError && <div className="invalid-feedback">{imageError}</div>}
+                    <div className="form-text" id="basic-addon4">
+                      Imagen Secundaria no obligatoria
+                    </div>
+                  </div>
+                }
+
+                {
+                  imageSecondary && <div className="m-3 d-flex flex-column justify-content-center align-items-center">
+                    <label
+                      className="d-flex flex-column gap-4 align-items-center justify-content-center p-3 rounded-4"
+                      style={{ height: '200px', width: '200px', cursor: 'pointer', backgroundColor: '#202020' }} htmlFor="viewimg2"
+                    >
+                      <div className="d-flex flex-column justify-content-between align-items-center w-100 h-100">
+                        <img className="h-75 img-fluid" src={URL.createObjectURL(imageSecondary)} alt="img" />
+                        <button onClick={handleRemoveImageSecondary} className="btn btn-danger mt-3">Eliminar</button>
+                      </div>
+                    </label>
+                    <div className="form-text" id="basic-addon4">
+                      Imagen Secundaria no obligatoria
+                    </div>
+                  </div>
+                }
+
+
               </div>
 
+
+
+
+              <div className="form__group field my-3 ">
+                <input
+                  type="file"
+                  className={`form-control ${pdfError ? "is-invalid" : ""}`}
+                  id="inputGroupFilePDF"
+                  accept="application/pdf"
+                  onChange={(e) => handlePdfChange(e.target.files?.[0] ?? null)}
+                  ref={(el) => (pdfInputRef.current = el)}
+                  style={{ color: '#048c88' }}
+                />
+                <label htmlFor="inputGroupFilePDF" className="form__label form-label">Archivo PDF</label>
+                {pdfError && <div className="invalid-feedback">{pdfError}</div>}
+              </div>
+
+              <div className="form-text" id="basic-addon4">
+                Archivo PDF no obligatorio
+              </div>
+
+
+
+
               {/* Input para el archivo PDF */}
-              <div className="input-group mt-3">
+              {/* <div className="input-group mt-3">
                 <label className="input-group-text" htmlFor="inputGroupFilePDF">
                   <b>Archivo PDF</b>
                 </label>
@@ -342,81 +421,33 @@ export const ProductForm = () => {
                   ref={(el) => (pdfInputRef.current = el)}
                 />
                 {pdfError && <div className="invalid-feedback">{pdfError}</div>}
-              </div>
-              <div className="form-text" id="basic-addon4">
-                Archivo PDF no obligatorio
-              </div>
+              </div> */}
+
+
             </div>
             {/* Fin Segunda columna*/}
           </div>
-        </div>
+        </div >
 
         <div className="mt-3 d-grid justify-content-center">
           <button id="bottone5" type="submit" disabled={isUploading}>{isUploading ? "Subiendo..." : "Agregar Producto"}</button>
         </div>
 
-        {uploadMessage && (
-          <div className={`mt-3 ${isUploading ? "text-info" : "text-success"}`}>
-            {uploadMessage}
-          </div>
-        )}
+        {
+          uploadMessage && (
+            <div className={`mt-3 ${isUploading ? "text-info" : "text-success"}`}>
+              {uploadMessage}
+            </div>
+          )
+        }
 
-        {successMessageVisible && (
-          <div className={`mt-3 text-success`}>Subida Exitosa</div>
-        )}
+        {
+          successMessageVisible && (
+            <div className={`mt-3 text-success`}>Subida Exitosa</div>
+          )
+        }
 
-      </form>
-    </div>
+      </form >
+    </div >
   );
 };
-
-
-{/* <div className="input-group">
-                <span className="input-group-text">
-                  <b>Descripción</b>
-                </span>
-                <textarea
-                  className={`form-control ${descripcionError ? "is-invalid" : ""}`}
-                  aria-label="Descripción de Producto"
-                  placeholder="Descripción de Producto"
-                  value={formData.descripcionProducto}
-                  onChange={handleDescripcionChange}
-                  required
-                ></textarea>
-                {descripcionError && (<div className="invalid-feedback">{descripcionError}</div>)}
-              </div> */}
-
-{/* <div className="input-group mt-3">
-                <label className="input-group-text" htmlFor="inputGroupFile">
-                  <b>Imagen del Producto</b>
-                </label>
-                <input
-                  type="file"
-                  className={`form-control ${imageError ? "is-invalid" : ""}`}
-                  id="inputGroupFile"
-                  accept="image/*"
-                  onChange={(e) => handleFileChange(e)}
-                  required
-                  ref={(el) => (secondaryFileInputRef.current = el)}
-                />
-                {imageError && <div className="invalid-feedback">{imageError}</div>}
-              </div> */}
-
-{/* Input para la imagen secundaria */ }
-
-{/* <div className="input-group mt-3">
-                <label className="input-group-text" htmlFor="inputGroupFileSecondary">
-                  <b>Imagen Secundaria</b>
-                </label>
-
-                <input
-                  type="file"
-                  className={`form-control ${imageError ? "is-invalid" : ""}`}
-                  id="inputGroupFileSecondary"
-                  accept="image/*"
-                  onChange={(e) => handleFileChange(e, true)}
-                  ref={(el) => (fileInputRef.current = el)}
-                />
-
-                {imageError && <div className="invalid-feedback">{imageError}</div>}
-              </div> */}
