@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LoginAdmin, FormProductsAdmin } from "./pages";
 import { AuthProvider } from "./context/AuthContext";
-import { ProtectedRoute } from "./Components/ProtectedRoute";
+import { ProtectedRoute } from "./providers/ProtectedRoute";
 import { ProductForm, ProductTable } from "./Components";
 
 function App() {

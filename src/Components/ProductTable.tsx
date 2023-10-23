@@ -30,7 +30,7 @@ export const ProductTable = () => {
   };
 
   return (
-    <div>
+    <>
       {loading ? (
         <p>Cargando productos...</p>
       ) : (
@@ -76,6 +76,7 @@ export const ProductTable = () => {
                           producto.pdfName
                         )
                       }
+                      className="btn btn-danger"
                     >
                       Borrar
                     </button>
@@ -86,6 +87,6 @@ export const ProductTable = () => {
           </table>
         </div>
       )}
-    </div>
+    </>
   );
 };

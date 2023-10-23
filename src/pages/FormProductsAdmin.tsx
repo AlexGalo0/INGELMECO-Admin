@@ -4,7 +4,7 @@ import { Sidebar } from "../Components";
 export const FormProductsAdmin = () => {
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid vh-100">
       <div className="p-2">
         <button className="bg-transparent border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
           <img

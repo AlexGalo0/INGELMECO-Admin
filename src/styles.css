@@ -11,13 +11,17 @@ body {
     background: var(--color-primary);
 }
 
-.container {
+/* .container {
     max-width: 900px;
-}
+} */
 
 .container-login {
     margin-top: 35px;
     background-color: var(--color-quinary);
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 a {
@@ -27,15 +31,6 @@ a {
 
 input {
     outline: none !important;
-}
-
-/*ocultar el texto por defecto de los inputs tipo "file" que dice "seleccione un archivo"*/
-input[type="file"] {
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    outline: none !important;
-    
 }
 
 h1 {
@@ -249,10 +244,16 @@ section#formHolder {
     width: 300px;
 }
 
-@media (max-width: 768px) {
-    .container {
-        overflow: hidden;
+@media screen and (max-width: 768px) {
+    .offcanvas.offcanvas-start {
+        width: 100%;
     }
+}
+
+@media (max-width: 768px) {
+    /* .container {
+        overflow: hidden;
+    } */
 
     section#formHolder {
         padding: 0;
@@ -317,75 +318,4 @@ section#formHolder {
     h2 {
         font-size: 15px !important;
     }
-}
-
-/* De La Pagina de Productos */
-.container-sidebar {
-    display: flex;
-    margin: 0;
-    padding: 0;
-}
-
-.sidebar {
-    background-color: #ffffff;
-    color: #000000;
-    width: 250px;
-    height: 100vh;
-    display: flex;
-    margin-left: 0;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.logo {
-    margin: 20px 0;
-    font-size: 24px;
-}
-
-.logout-button {
-    background-color: #ffffff;
-    color: black;
-    font-weight: bold;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-}
-
-.product-table {
-    background-color: white;
-}
-
-.image-container {
-    display: flex;
-    justify-content: center;
-    padding: 0 20px;
-    margin-right: 5px;
-}
-
-.img-fluid {
-    max-width: 100%;
-}
-
-.menu-link-bold {
-    color: #000;
-    font-weight: bold;
-}
-
-.img-icon {
-    max-width: 42px;
-}
-
-.small-text {
-    font-size: 15px;
-    padding-right: 30px;
-}
-
-.product-table-container {
-    margin-left: 100px;
-    margin-right: 50px;
-    margin-top: 100px;
-    max-height: 500px;
-    /* MODIFICAR */
-    overflow-y: auto;
 }

@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export const Sidebar = () => {
@@ -15,53 +15,45 @@ export const Sidebar = () => {
 
   return (
     <div className="offcanvas offcanvas-start" tabIndex={-1} id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-      <div className="offcanvas-header d-flex align-items-center">
-        <img
-          className="img-fluid"
-          src="../src/assets/logo.png"
-          alt="Logo Ingelmeco img"
-          style={{ width: "170px" }}
-        />
-        <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      <div className="offcanvas-header d-flex align-items-center justify-content-center">
+
+        <button type="button" className="bg-transparent btn border-0" data-bs-dismiss="offcanvas" aria-label="Close">
+          <img className="img-fluid" src="../src/assets/logo.png" alt="Logo Ingelmeco" style={{ width: "170px" }} />
+        </button>
+
       </div>
+
       <div className="offcanvas-body">
 
-        <div className="">
-          <ul className="my-3">
-            <li className="my-2 d-flex align-items-center">
-              <div className="image-container mr-2">
-                <img
-                  className="img-icon"
-                  src="../src/assets/bienes.png"
-                  alt="Ícono de Producto"
-                />
-              </div>
-              {useLocation().pathname === "/admin/products" ? (
-                <Link
-                  to="/admin/add-product"
-                  className="menu-link-bold small-text"
-                >
-                  Agregar Producto
-                </Link>
-              ) : (
-                <Link to="/admin/products" className="menu-link-bold small-text">
-                  Ver Productos
-                </Link>
-              )}
-            </li>
-          </ul>
-        </div>
+        <ul className="d-flex flex-column justify-content-between" style={{height: '85%'}}>
+          <div>
 
-        <div className="">
-          <img
-            className="img-icon"
-            src="../src/assets/cerrar-sesion.png"
-            alt="Ícono de Cerrar Sesión"
-          />
-          <button className="menu-link-bold small-text" onClick={handleLogout}>Cerrar Sesión</button>
-        </div>
+            <li className="my-3 d-flex align-items-center">
+              <Link to="/admin/add-product" className="btn bg-transparent text-dark fw-bold border-0">
+                <img className="img-fluid mx-2" src="../src/assets/bienes.png" alt="Icono de Producto" style={{ width: "40px" }} />
+                Agregar Producto
+              </Link>
+            </li>
+
+            <li className="my-3 d-flex align-items-center">
+              <Link to="/admin/products" className="btn bg-transparent text-dark fw-bold border-0">
+                <img className="img-fluid mx-2" src="../src/assets/bienes.png" alt="Icono de Producto" style={{ width: "40px" }} />
+                Ver Productos
+              </Link>
+            </li>
+          </div>
+
+          <div className="">
+            <li className="my-3 d-flex align-items-center">
+              <button className="btn bg-transparent text-dark fw-bold border-0" onClick={handleLogout}>
+                <img className="img-fluid mx-2" src="../src/assets/cerrar-sesion.png" alt="Icono de Cerrar Sesión" style={{ width: "40px" }} />
+                Cerrar Sesión
+              </button>
+            </li>
+          </div>
+        </ul>
+
       </div>
     </div>
-
   );
 };

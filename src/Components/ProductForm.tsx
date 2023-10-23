@@ -143,7 +143,7 @@ export const ProductForm = () => {
   };
 
   return (
-    <div className="m-4 rounded-4 h-100" style={{ backgroundColor: '#DDD', height: '600px' }}>
+    <div className="m-4 rounded-4 h-75" style={{ backgroundColor: '#DDD'}}>
 
       <p className="fw-bold m-0 px-5 pt-3" style={{ color: '#000', fontSize: '25px' }}>Registrar producto</p>
 
@@ -293,7 +293,6 @@ export const ProductForm = () => {
             </div>
             {/* Fin Primera columna*/}
 
-
             {/* Segunda columna*/}
             <div className="col">
               <div className="d-flex">
@@ -328,8 +327,8 @@ export const ProductForm = () => {
                       className="d-flex flex-column gap-4 align-items-center justify-content-center p-3 rounded-4"
                       style={{ height: '200px', width: '200px', cursor: 'pointer', backgroundColor: '#202020' }} htmlFor="viewImg"
                     >
-                      <div className="d-flex flex-column justify-content-between align-items-center w-100 h-100">
-                        <img className="w-75 img-fluid" src={URL.createObjectURL(imagePrimary)} alt="img" />
+                      <div className="d-flex flex-column justify-content-between align-items-center h-100">
+                        <img className="w-50 img-fluid" src={URL.createObjectURL(imagePrimary)} alt="img" />
                         <button onClick={handleRemoveImagePrimary} className="btn btn-danger mt-3">Eliminar</button>
                       </div>
                     </label>
@@ -369,8 +368,8 @@ export const ProductForm = () => {
                       className="d-flex flex-column gap-4 align-items-center justify-content-center p-3 rounded-4"
                       style={{ height: '200px', width: '200px', cursor: 'pointer', backgroundColor: '#202020' }} htmlFor="viewimg2"
                     >
-                      <div className="d-flex flex-column justify-content-between align-items-center w-100 h-100">
-                        <img className="h-75 img-fluid" src={URL.createObjectURL(imageSecondary)} alt="img" />
+                      <div className="d-flex flex-column justify-content-between align-items-center h-100">
+                        <img className="h-50 img-fluid" src={URL.createObjectURL(imageSecondary)} alt="img" />
                         <button onClick={handleRemoveImageSecondary} className="btn btn-danger mt-3">Eliminar</button>
                       </div>
                     </label>
@@ -382,9 +381,6 @@ export const ProductForm = () => {
 
 
               </div>
-
-
-
 
               <div className="form__group field my-3 ">
                 <input
@@ -403,26 +399,6 @@ export const ProductForm = () => {
               <div className="form-text" id="basic-addon4">
                 Archivo PDF no obligatorio
               </div>
-
-
-
-
-              {/* Input para el archivo PDF */}
-              {/* <div className="input-group mt-3">
-                <label className="input-group-text" htmlFor="inputGroupFilePDF">
-                  <b>Archivo PDF</b>
-                </label>
-                <input
-                  type="file"
-                  className={`form-control ${pdfError ? "is-invalid" : ""}`}
-                  id="inputGroupFilePDF"
-                  accept="application/pdf"
-                  onChange={(e) => handlePdfChange(e.target.files?.[0] ?? null)}
-                  ref={(el) => (pdfInputRef.current = el)}
-                />
-                {pdfError && <div className="invalid-feedback">{pdfError}</div>}
-              </div> */}
-
 
             </div>
             {/* Fin Segunda columna*/}
