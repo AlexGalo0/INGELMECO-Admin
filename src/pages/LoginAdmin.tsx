@@ -4,7 +4,7 @@ export const LoginAdmin = () => {
 
   return (
     <div className="container-login">
-      <div className="container">
+      <div className="container px-xl-5">
         <section id="formHolder">
           <div className="row">
             <div className="col-sm-6 brand d-xxl-block d-xl-block d-lg-block d-md-block d-sm-none d-block">
