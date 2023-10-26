@@ -141,7 +141,7 @@ section#formHolder {
     border-bottom: 2px solid var(--color-quaternary);
     outline: 0;
     font-size: 17px;
-    color: #fff;
+    color: var(--color-quaternary);
     padding: 1px 0;
     background: transparent;
     transition: border-color 0.2s;
