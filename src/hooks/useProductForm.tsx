@@ -15,6 +15,11 @@ export const useProductForm = (
     subcategoriaProducto: "",
     descripcionProducto: "",
     marcaProducto: "",
+    id: "",
+    imageName: "",
+    imageNameSecondary: "",
+    pdfName: "",
+    urlImagenSecundaria: "",
   };
 
   const [formData, setFormData] = useState<ProductFormData>(initialFormData);
@@ -108,13 +113,16 @@ export const useProductForm = (
         const downloadURL = await uploadFileToStorage(file);
         const productData = {
           nombreProducto: formData.nombreProducto,
-
           categoriaProducto: formData.categoriaProducto,
           subcategoriaProducto: formData.subcategoriaProducto,
           descripcionProducto: formData.descripcionProducto,
           urlImagen: downloadURL,
           marcaProducto: formData.marcaProducto,
           imageName: imageName,
+          urlImagenSecundaria: null as string | null,
+          imageNameSecondary: null as string | null,
+          pdfName: null as string | null,
+          urlPdf: null as string | null,
         };
 
         if (fileSecondary) {
@@ -142,9 +150,17 @@ export const useProductForm = (
           setSuccessMessageVisible(false);
         }, 1000);
         setFormData(initialFormData);
-        fileInputRef.current.value = null;
-        secondaryFileInputRef.current.value = null;
-        pdfInputRef.current.value = null; // Limpiar el input de PDF
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+
+        if (secondaryFileInputRef.current) {
+          secondaryFileInputRef.current.value = "";
+        }
+
+        if (pdfInputRef.current) {
+          pdfInputRef.current.value = "";
+        }
         setFileSecondary(null);
         setPdfFile(null); // Limpiar el estado del archivo PDF
       } catch (error) {

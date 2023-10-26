@@ -32,64 +32,80 @@ export const ProductTable = () => {
   return (
     <>
       {loading ? (
-        <p>Cargando productos...</p>
+        <div className="flex justify-content-center ">
+          <h2 className="text-white text-2xl">Cargando productos...</h2>
+        </div>
       ) : (
         <div className="container p-xxl-5 p-md-4">
           <p className="text-light fw-bold fs-3">Lista de Productos</p>
 
-            <table className="table table-striped table-hover table-bordered border-light-subtle w-100">
-              <thead className="text-center">
-                <tr>
-                  <th scope="col">Nombre</th>
-                  <th className="d-none d-xxl-table-cell" scope="col">Descripción</th>
-                  <th className="d-none d-xl-table-cell d-xxl-table-cell" scope="col">Marca</th>
-                  <th scope="col">Categoria</th>
-                  <th className="d-none d-xxl-table-cell" scope="col">Sub categoría</th>
-                  <th scope="col">Borrar</th>
+          <table className="table table-striped table-hover table-bordered border-light-subtle w-100">
+            <thead className="text-center">
+              <tr>
+                <th scope="col">Nombre</th>
+                <th className="d-none d-xxl-table-cell" scope="col">
+                  Descripción
+                </th>
+                <th
+                  className="d-none d-xl-table-cell d-xxl-table-cell"
+                  scope="col"
+                >
+                  Marca
+                </th>
+                <th scope="col">Categoria</th>
+                <th className="d-none d-xxl-table-cell" scope="col">
+                  Sub categoría
+                </th>
+                <th scope="col">Borrar</th>
+              </tr>
+            </thead>
+            <tbody>
+              {productos.map((producto) => (
+                <tr key={producto.id}>
+                  {/*nombre*/}
+                  <td className="">{producto.nombreProducto}</td>
+                  {/*descripcion*/}
+                  <td className="d-none d-xxl-table-cell">
+                    {producto.descripcionProducto.length > 15
+                      ? producto.descripcionProducto.slice(0, 15) + "..."
+                      : producto.descripcionProducto}
+                  </td>
+                  {/*marca*/}
+                  <td className="d-none d-xl-table-cell d-xxl-table-cell">
+                    {producto.marcaProducto}
+                  </td>
+                  {/*categoria*/}
+                  <td>{producto.categoriaProducto}</td>
+                  {/*subcategoria*/}
+                  <td className="d-none d-xxl-table-cell">
+                    {producto.subcategoriaProducto.length > 14
+                      ? producto.subcategoriaProducto.slice(0, 14) + "..."
+                      : producto.subcategoriaProducto}
+                  </td>
+                  {/*boton borrar*/}
+                  <td className="text-center">
+                    <button
+                      onClick={() =>
+                        handleDelete(
+                          producto.id,
+                          producto.imageName,
+                          producto.imageNameSecondary,
+                          producto.pdfName
+                        )
+                      }
+                      className="btn fw-bold text-white"
+                      style={{
+                        backgroundColor: "#048c88",
+                        borderRadius: "20px",
+                      }}
+                    >
+                      Borrar
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {productos.map((producto) => (
-                  <tr key={producto.id}>
-                    {/*nombre*/}
-                    <td className="">{producto.nombreProducto}</td>
-                    {/*descripcion*/}
-                    <td className="d-none d-xxl-table-cell">
-                      {producto.descripcionProducto.length > 15
-                        ? producto.descripcionProducto.slice(0, 15) + "..."
-                        : producto.descripcionProducto}
-                    </td>
-                    {/*marca*/}
-                    <td className="d-none d-xl-table-cell d-xxl-table-cell">{producto.marcaProducto}</td>
-                    {/*categoria*/}
-                    <td>{producto.categoriaProducto}</td>
-                    {/*subcategoria*/}
-                    <td className="d-none d-xxl-table-cell">
-                      {producto.subcategoriaProducto.length > 14
-                        ? producto.subcategoriaProducto.slice(0, 14) + "..."
-                        : producto.subcategoriaProducto}
-                    </td>
-                    {/*boton borrar*/}
-                    <td className="text-center">
-                      <button
-                        onClick={() =>
-                          handleDelete(
-                            producto.id,
-                            producto.imageName,
-                            producto.imageNameSecondary,
-                            producto.pdfName
-                          )
-                        }
-                        className="btn fw-bold text-white"
-                        style={{ backgroundColor: "#048c88", borderRadius: "20px" }}
-                      >
-                        Borrar
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </>

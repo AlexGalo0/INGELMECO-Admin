@@ -14,6 +14,7 @@ export const useProductFetch = () => {
         ...doc.data(),
         id: doc.id,
       }));
+    
       setProductos(newData);
  
       setLoading(false);
