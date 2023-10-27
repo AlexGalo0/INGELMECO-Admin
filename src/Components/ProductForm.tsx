@@ -140,6 +140,11 @@ export const ProductForm = () => {
     }
   };
 
+  if(successMessageVisible) {
+    handleRemoveImagePrimary();
+    handleRemoveImageSecondary();
+  }
+  
   return (
     <div className="d-grid h-75">
       <div className="m-4 rounded-4 h-auto" style={{ backgroundColor: "#DDD" }}>
