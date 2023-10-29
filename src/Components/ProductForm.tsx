@@ -3,9 +3,13 @@ import { useState, useRef, useEffect } from "react";
 import { Alerts } from "../Components/Alerts.tsx";
 
 export const ProductForm = () => {
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
   const secondaryFileInputRef = useRef<HTMLInputElement | null>(null);
+
   const pdfInputRef = useRef<HTMLInputElement | null>(null); // Referencia al input de PDF
+
   const {
     formData,
     setFormData,
@@ -357,19 +361,22 @@ export const ProductForm = () => {
                         </div>
                         <input
                           type="file"
-                          className={`d-none ${imageError ? "is-invalid" : ""}`}
+                          className={`bg-transparent ${imageError ? "is-invalid" : ""}`} // d-none
                           id="inputGroupFile"
                           accept="image/*"
                           onChange={(e) => handleFileChange(e)}
                           required
-                          ref={(el) => (secondaryFileInputRef.current = el)}
+                          //ref={(el) => (secondaryFileInputRef.current = el)}
+                          ref={(el) => (fileInputRef.current = el)}
                         />
+                        {/* <div className="text-danger bg-black">Error al subir imagen</div> */}
+                        {imageError && (
+                          <div className="text-danger bg-black">dsfd{imageError}</div>
+                        )}
                       </label>
-                      {imageError && (
-                        <div className="invalid-feedback">{imageError}</div>
-                      )}
                     </div>
                   )}
+
                   {imagePrimary && (
                     <div className="m-3 d-flex justify-content-center">
                       <label
@@ -413,7 +420,7 @@ export const ProductForm = () => {
                       >
                         <div className="d-flex flex-column align-items-center justify-content-center">
                           <img
-                            className="h-50 img-fluid"
+                            className="h-50 img-fluid "
                             src="../src/assets/img.png"
                             alt="img"
                           />
@@ -423,15 +430,16 @@ export const ProductForm = () => {
                         </div>
                         <input
                           type="file"
-                          className={`d-none ${imageError ? "is-invalid" : ""}`}
+                          className={`bg-transparent ${imageError ? "is-invalid" : ""}`}// d-none
                           id="inputGroupFileSecondary"
                           accept="image/*"
                           onChange={(e) => handleFileChange(e, true)}
-                          ref={(el) => (fileInputRef.current = el)}
+                          // ref={(el) => (fileInputRef.current = el)}
+                          ref={(el) => (secondaryFileInputRef.current = el)}
                         />
                       </label>
                       {imageError && (
-                        <div className="invalid-feedback">{imageError}</div>
+                        <div className="">{imageError}</div>
                       )}
                       <div className="form-text" id="basic-addon4">
                         Imagen Secundaria no obligatoria
