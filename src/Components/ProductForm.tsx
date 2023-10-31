@@ -130,13 +130,10 @@ export const ProductForm = () => {
 
   useEffect(() => {
     (!currentProduct) ? setCurrentProduct(null) : setFormData(currentProduct);
-
     if (currentProduct && (currentProduct.imageName || currentProduct.imageNameSecondary)) {
-      console.log(currentProduct.urlImagen);
       setImageUrlPrimary(currentProduct.urlImagen);
       setImageUrlSecondary(currentProduct.urlImagenSecundaria);
     }
-
   }, [currentProduct, setCurrentProduct, setFormData, fileSecondary]);
 
   return (
@@ -472,7 +469,21 @@ export const ProductForm = () => {
             </div>
           </div>
 
-          <div className={`mt-xxl-5 mt-xl-5 mt-lg-5 mt-md-4 mt-sm-2 mt-3 d-flex justify-content-center align-items-center ${uploadMessage ? "d-none" : ""}`}>
+          <div className={`mt-xxl-5 mt-xl-5 mt-lg-5 mt-md-4 mt-sm-2 mt-3 d-flex justify-content-around align-items-center ${uploadMessage ? "d-none" : ""}`}>
+            <button
+              // onClick={() =>
+              //   handleDelete(
+              //     producto.id,
+              //     producto.imageName,
+              //     producto.imageNameSecondary,
+              //     producto.pdfName
+              //   )
+              // }
+              id="bottone5"
+              className=" justify-content-around"
+            >
+              Borrar
+            </button>
             <button id="bottone5" type="submit" disabled={isUploading}>
               {isUploading ? "Subiendo..." : "Agregar Producto"}
             </button>
