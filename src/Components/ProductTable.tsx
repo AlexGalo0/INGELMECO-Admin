@@ -2,10 +2,14 @@ import { useProductFetch } from "../hooks/useProductFetch";
 import { collection, deleteDoc, doc } from "firebase/firestore";
 import { db, storage } from "../config/firebase.ts";
 import { deleteObject, ref } from "firebase/storage";
+import { useAuth } from "../context/AuthContext.tsx";
+import { useNavigate } from 'react-router-dom';
 
 export const ProductTable = () => {
 
   const { productos, loading, fetchProducts } = useProductFetch();
+  const navigate = useNavigate();
+  const { setCurrentProduct } = useAuth();
 
   const handleDelete = async (
     id: string,
@@ -30,6 +34,18 @@ export const ProductTable = () => {
       fetchProducts();
     }
   };
+
+  const handleEdit = (e: React.MouseEvent<HTMLTableRowElement, MouseEvent>, id: string) => {
+    e.preventDefault();
+    const product = productos.find((producto) => producto.id === id);
+
+    if (product) {
+      setCurrentProduct(product);
+      setTimeout(() => {
+        navigate("/admin/add-product");
+      }, 500);
+    }
+  }
 
   return (
     <>
@@ -61,7 +77,7 @@ export const ProductTable = () => {
               </thead>
               <tbody>
                 {productos.map((producto) => (
-                  <tr key={producto.id}>
+                  <tr key={producto.id} onDoubleClick={(e) => handleEdit(e, producto.id)}>
                     {/*nombre*/}
                     <td className="">{producto.nombreProducto}</td>
                     {/*descripcion*/}

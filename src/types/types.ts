@@ -8,5 +8,6 @@ export interface ProductFormData {
   imageName: string;
   imageNameSecondary: string;
   pdfName: string;
+  urlImagen: string;
   urlImagenSecundaria:string;
 }

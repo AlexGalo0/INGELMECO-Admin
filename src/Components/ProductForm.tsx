@@ -1,14 +1,14 @@
 import { useProductForm } from "../hooks/useProductForm";
 import { useState, useRef, useEffect } from "react";
 import { Alerts } from "../Components/Alerts.tsx";
+import { useAuth } from "../context/AuthContext.tsx"
 
 export const ProductForm = () => {
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
   const secondaryFileInputRef = useRef<HTMLInputElement | null>(null);
-
   const pdfInputRef = useRef<HTMLInputElement | null>(null); // Referencia al input de PDF
+  const { currentProduct, setCurrentProduct } = useAuth();
 
   const {
     formData,
@@ -74,10 +74,6 @@ export const ProductForm = () => {
     const descripcion = e.target.value;
     if (descripcion.trim().length === 0) {
       setDescripcionError("La descripción no puede estar vacía");
-
-      setTimeout(() => {
-        setShowDescripcion(!showDescripcion);
-      }, 3000);
     } else {
       setDescripcionError(null);
     }
@@ -91,7 +87,6 @@ export const ProductForm = () => {
     const marca = e.target.value;
     if (!marca) {
       setMarcaError("Selecciona una marca");
-      setShowMarca(false);
     } else {
       setMarcaError(null);
     }
@@ -105,7 +100,6 @@ export const ProductForm = () => {
     const categoria = e.target.value;
     if (!categoria) {
       setCategoriaError("Selecciona una categoría");
-      setShowCategories(false);
     } else {
       setCategoriaError(null);
     }
@@ -114,24 +108,6 @@ export const ProductForm = () => {
       categoriaProducto: categoria,
     });
   };
-
-  const [showCategories, setShowCategories] = useState<boolean>(false);
-  const [showMarca, setShowMarca] = useState<boolean>(false);
-  const [showDescripcion, setShowDescripcion] = useState<boolean>(false);
-
-  const handleShowCategories = () => {
-    setShowCategories(!showCategories);
-  };
-
-  const handleShowMarca = () => {
-    setShowMarca(!showMarca);
-  };
-
-  const handleShowDescripcion = () => {
-    setShowDescripcion(!showDescripcion);
-  };
-
-  useEffect(() => { }, [fileSecondary]);
 
   const handleRemoveImagePrimary = () => {
     if (imagePrimary) {
@@ -150,6 +126,22 @@ export const ProductForm = () => {
     handleRemoveImageSecondary();
   }
 
+  useEffect(() => {
+    (!currentProduct) ? setCurrentProduct(null) : setFormData(currentProduct);
+
+    if (currentProduct && (currentProduct.imageName || currentProduct.imageNameSecondary)) {
+
+      // setImagePrimary(currentProduct.urlImagen);
+      // setImageSecondary(currentProduct.urlImagenSecundaria);
+      // console.log(currentProduct.urlImagen);
+      // const blob = new Blob([currentProduct.urlImagen], { type: 'image/*' });
+      // const file = new File([blob], 'image.jpg', { type: 'image/*' });
+      // console.log(file);
+      // setImagePrimary(file);
+    }
+
+  }, [currentProduct, setCurrentProduct, setFormData, fileSecondary]);
+
   return (
     <div className="d-grid h-75">
       <div className="m-4 rounded-4 h-auto" style={{ backgroundColor: "#DDD" }}>
@@ -162,11 +154,13 @@ export const ProductForm = () => {
             <div className="row">
               {/* Primera columna*/}
               <div className="col-xxl-6 col-xl-6 col-lg-6">
+
+                {/*Nombre*/}
                 <div className="form__group field my-3">
                   <input
                     type="text"
                     id="NameProduct"
-                    value={formData.nombreProducto}
+                    value={formData?.nombreProducto ?? ""}
                     onChange={handleNombreChange}
                     className={`form__field ${nombreError ? "is-invalid" : ""}`}
                     placeholder="Nombre del Producto"
@@ -182,52 +176,41 @@ export const ProductForm = () => {
                   )}
                 </div>
 
+                {/*Categoría*/}
                 <div className="form__group field my-3">
-                  {showCategories ? (
-                    <select
-                      id="CategorieProduct"
-                      onChange={handleCategoriaChange}
-                      value={formData.categoriaProducto}
-                      className={`form__field ${categoriaError ? "is-invalid" : ""
-                        }`}
-                      placeholder="Categoría del Producto"
-                      aria-label="Categoría del Producto"
-                      required
-                      style={{ color: "#048c88" }}
-                    >
-                      <option value="">Selecciona una Categoría</option>
-                      <option value="Cables de Control">Cables de Control</option>
-                      <option value="Cables de Potencia">
-                        Cables de Potencia
-                      </option>
-                      <option value="Gabinete">Gabinete</option>
-                      <option value="Automatización y Control">
-                        Automatización y Control
-                      </option>
-                      <option value="Bancos Capacitores">
-                        Bancos Capacitores
-                      </option>
-                      <option value="Distribución">Distribución</option>
-                      <option value="Energía Solar">Energía Solar</option>
-                      <option value="Control de Factor y de Potencia">
-                        Control de Factor y de Potencia
-                      </option>
-                      <option value="Arrancador de Estado Sólido">
-                        Arrancador de Estado Sólido
-                      </option>
-                    </select>
-                  ) : (
-                    <input
-                      type="text"
-                      id="CategorieProduct"
-                      onClick={handleShowCategories}
-                      className={`form__field ${showCategories ? "d-none" : ""}`}
-                      placeholder="Categoría del Producto"
-                      required
-                      aria-label="Categoría del Producto"
-                      style={{ color: "#048c88" }}
-                    />
-                  )}
+                  <select
+                    id="CategorieProduct"
+                    onChange={handleCategoriaChange}
+                    value={formData?.categoriaProducto ?? ""}
+                    className={`form__field ${categoriaError ? "is-invalid" : ""
+                      }`}
+                    placeholder="Categoría del Producto"
+                    aria-label="Categoría del Producto"
+                    required
+                    style={{ color: "#048c88" }}
+                  >
+                    <option value="">Selecciona una Categoría</option>
+                    <option value="Cables de Control">Cables de Control</option>
+                    <option value="Cables de Potencia">
+                      Cables de Potencia
+                    </option>
+                    <option value="Gabinete">Gabinete</option>
+                    <option value="Automatización y Control">
+                      Automatización y Control
+                    </option>
+                    <option value="Bancos Capacitores">
+                      Bancos Capacitores
+                    </option>
+                    <option value="Distribución">Distribución</option>
+                    <option value="Energía Solar">Energía Solar</option>
+                    <option value="Control de Factor y de Potencia">
+                      Control de Factor y de Potencia
+                    </option>
+                    <option value="Arrancador de Estado Sólido">
+                      Arrancador de Estado Sólido
+                    </option>
+                  </select>
+
                   <label htmlFor="CategorieProduct" className="form__label">
                     Categoría
                   </label>
@@ -236,11 +219,12 @@ export const ProductForm = () => {
                   )}
                 </div>
 
+                {/*Subcategoría*/}
                 <div className="form__group field my-3">
                   <input
                     type="text"
                     id="SubCategorieProduct"
-                    value={formData.subcategoriaProducto}
+                    value={formData?.subcategoriaProducto ?? ""}
                     onChange={(e) =>
                       setFormData({
                         ...formData,
@@ -260,76 +244,49 @@ export const ProductForm = () => {
                   </div>
                 </div>
 
+                {/*Marca*/}
                 <div className="form__group field my-3">
-                  {showMarca ? (
-                    <select
-                      id="MarcaProduct"
-                      onChange={handleMarcaChange}
-                      value={formData.marcaProducto}
-                      className={`form__field ${marcaError ? "is-invalid" : ""}`}
-                      placeholder="Marca del Producto"
-                      aria-label="Marca del Producto"
-                      required
-                      style={{ color: "#048c88" }}
-                    >
-                      <option value="">Selecciona una Marca</option>
-                      <option value="SIEMENS">SIEMENS</option>
-                      <option value="ABB">ABB</option>
-                      <option value="Electronicon">Electronicon</option>
-                      <option value="SIBA">SIBA</option>
-                      <option value="Selec">Selec</option>
-                      <option value="DataKom">DataKom</option>
-                      <option value="Little Fuse">Little Fuse</option>
-                      <option value="Otra Marca">Otra Marca</option>
-                    </select>
-                  ) : (
-                    <input
-                      type="text"
-                      id="CategorieProduct"
-                      onClick={handleShowMarca}
-                      className={`form__field ${showMarca ? "d-none" : ""}`}
-                      placeholder="Marca del Producto"
-                      aria-label="Marca del Producto"
-                      style={{ color: "#048c88" }}
-                    />
-                  )}
+                  <select
+                    id="MarcaProduct"
+                    onChange={handleMarcaChange}
+                    value={formData?.marcaProducto ?? ""}
+                    className={`form__field ${marcaError ? "is-invalid" : ""}`}
+                    placeholder="Marca del Producto"
+                    aria-label="Marca del Producto"
+                    required
+                    style={{ color: "#048c88" }}
+                  >
+                    <option value="">Selecciona una Marca</option>
+                    <option value="SIEMENS">SIEMENS</option>
+                    <option value="ABB">ABB</option>
+                    <option value="Electronicon">Electronicon</option>
+                    <option value="SIBA">SIBA</option>
+                    <option value="Selec">Selec</option>
+                    <option value="DataKom">DataKom</option>
+                    <option value="Little Fuse">Little Fuse</option>
+                    <option value="Otra Marca">Otra Marca</option>
+                  </select>
                   <label htmlFor="MarcaProduct" className="form__label">
                     Marca
                   </label>
-                  {marcaError && (
-                    <div className="invalid-feedback">{marcaError}</div>
-                  )}
+                  {marcaError && (<div className="invalid-feedback">{marcaError}</div>)}
                 </div>
 
+                {/*Descripción*/}
                 <div className="form__group field my-3">
-                  {showDescripcion ? (
-                    <textarea
-                      className={`form__field ${descripcionError ? "is-invalid" : ""
-                        }`}
-                      aria-label="Descripción de Producto"
-                      placeholder="Descripción de Producto"
-                      value={formData.descripcionProducto}
-                      onChange={handleDescripcionChange}
-                      style={{ color: "#048c88" }}
-                      required
-                    ></textarea>
-                  ) : (
-                    <input
-                      type="text"
-                      id="DescriptionProduct"
-                      onClick={handleShowDescripcion}
-                      className={`form__field ${showDescripcion ? "d-none" : ""}`}
-                      placeholder="Descripción del Producto"
-                      aria-label="Descripción del Producto"
-                      style={{ color: "#048c88" }}
-                    />
-                  )}
+                  <textarea
+                    className={`form__field ${descripcionError ? "is-invalid" : ""}`}
+                    aria-label="Descripción de Producto"
+                    placeholder="Descripción de Producto"
+                    value={formData?.descripcionProducto ?? ""}
+                    onChange={handleDescripcionChange}
+                    style={{ color: "#048c88" }}
+                    required
+                  ></textarea>
                   <label htmlFor="CategorieProduct" className="form__label">
                     Descripción
                   </label>
-                  {descripcionError && (
-                    <div className="invalid-feedback">{descripcionError}</div>
-                  )}
+                  {descripcionError && (<div className="invalid-feedback">{descripcionError}</div>)}
                 </div>
               </div>
               {/* Fin Primera columna*/}
@@ -341,20 +298,11 @@ export const ProductForm = () => {
                     <div className="m-3 d-flex justify-content-center">
                       <label
                         className="d-flex flex-column gap-4 align-items-center justify-content-center p-3 rounded-4"
-                        style={{
-                          height: "200px",
-                          width: "200px",
-                          cursor: "pointer",
-                          backgroundColor: "#202020",
-                        }}
+                        style={{ height: "200px", width: "200px", cursor: "pointer", backgroundColor: "#202020" }}
                         htmlFor="inputGroupFile"
                       >
                         <div className="d-flex flex-column align-items-center justify-content-center">
-                          <img
-                            className="h-50 img-fluid"
-                            src="../src/assets/img.png"
-                            alt="img"
-                          />
+                          <img className="h-50 img-fluid" src="../src/assets/img.png" alt="img" />
                           <span style={{ fontWeight: "400", color: "#FFF" }}>
                             Click para subir imagen
                           </span>
@@ -490,15 +438,11 @@ export const ProductForm = () => {
                     ref={(el) => (pdfInputRef.current = el)}
                     style={{ color: "#048c88" }}
                   />
-                  <label
-                    htmlFor="inputGroupFilePDF"
-                    className="form__label form-label"
-                  >
+                  <label htmlFor="inputGroupFilePDF" className="form__label form-label">
                     Archivo PDF
                   </label>
                   {pdfError && <div className="invalid-feedback">{pdfError}</div>}
                 </div>
-
                 <div className="form-text" id="basic-addon4">
                   Archivo PDF no obligatorio
                 </div>
@@ -507,20 +451,17 @@ export const ProductForm = () => {
             </div>
           </div>
 
-          <div className="mt-xxl-5 mt-xl-5 mt-lg-5 mt-md-4 mt-sm-2 mt-3 d-flex justify-content-center align-items-center">
+          <div className={`mt-xxl-5 mt-xl-5 mt-lg-5 mt-md-4 mt-sm-2 mt-3 d-flex justify-content-center align-items-center ${uploadMessage ? "d-none" : ""}`}>
             <button id="bottone5" type="submit" disabled={isUploading}>
               {isUploading ? "Subiendo..." : "Agregar Producto"}
             </button>
           </div>
 
           {uploadMessage && (
-            <div className="d-flex justify-content-center m-3">
-              <Alerts
-                message="Cargando"
-                // message2="Ingresando ..." 
-                type="alert-success"
-                svg={<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="#ffffff" d="m9 20.42l-6.21-6.21l2.83-2.83L9 14.77l9.88-9.89l2.83 2.83L9 20.42Z" /></svg>}
-              />
+            <div className="d-flex justify-content-center m-5">
+              <div className="spinner">
+                <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+              </div>
             </div>
           )}
 

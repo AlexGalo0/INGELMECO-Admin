@@ -3,6 +3,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { onAuthStateChanged, signOut , signInWithEmailAndPassword} from "firebase/auth";
 import { ReactNode } from "react";
 import { auth } from "../config/firebase";
+import { ProductFormData } from "../types/types";
 
 interface currentUser {
   uid: string;
@@ -17,6 +18,8 @@ interface AuthContextProps {
   login: (email: string, password: string) => void;
   logout: () => Promise<void>;
   loading: boolean;
+  setCurrentProduct: React.Dispatch<React.SetStateAction<ProductFormData | null>>;
+  currentProduct: ProductFormData | null;
 } 
 
 interface AuthProviderProps {
@@ -32,8 +35,12 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
+
   const [user, setUser] = useState<currentUser | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const [currentProduct, setCurrentProduct] = useState<ProductFormData | null>({} as ProductFormData);
+
   const login = (email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
@@ -41,7 +48,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     const unsubuscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log(currentUser);
+      //console.log(currentUser);
       if (currentUser) {
         const { uid, email, displayName, photoURL, emailVerified } = currentUser;
         setUser({ uid, email: email || '', displayName: displayName || '', photoURL: photoURL || '', emailVerified: emailVerified || false });
@@ -54,7 +61,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   return (
-    <authContext.Provider value={{ user, login, logout , loading}}>
+    <authContext.Provider value={{ user, login, logout , loading, setCurrentProduct, currentProduct}}>
       {children}
     </authContext.Provider>
   );

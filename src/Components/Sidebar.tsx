@@ -3,11 +3,12 @@ import { useAuth } from "../context/AuthContext";
 
 export const Sidebar = () => {
 
-  const { logout } = useAuth();
+  const { logout, setCurrentProduct } = useAuth();
 
   const handleLogout = async () => {
     try {
       await logout();
+      setCurrentProduct(null);
     } catch (error: unknown) {
       console.error(error);
     }
