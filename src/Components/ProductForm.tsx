@@ -31,6 +31,8 @@ export const ProductForm = () => {
 
   const [imagePrimary, setImagePrimary] = useState<File | null>(null);
   const [imageSecondary, setImageSecondary] = useState<File | null>(null);
+  const [imageUrlPrimary, setImageUrlPrimary] = useState<string | null>(null);
+  const [imageUrlSecondary, setImageUrlSecondary] = useState<string | null>(null);
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -130,14 +132,9 @@ export const ProductForm = () => {
     (!currentProduct) ? setCurrentProduct(null) : setFormData(currentProduct);
 
     if (currentProduct && (currentProduct.imageName || currentProduct.imageNameSecondary)) {
-
-      // setImagePrimary(currentProduct.urlImagen);
-      // setImageSecondary(currentProduct.urlImagenSecundaria);
-      // console.log(currentProduct.urlImagen);
-      // const blob = new Blob([currentProduct.urlImagen], { type: 'image/*' });
-      // const file = new File([blob], 'image.jpg', { type: 'image/*' });
-      // console.log(file);
-      // setImagePrimary(file);
+      console.log(currentProduct.urlImagen);
+      setImageUrlPrimary(currentProduct.urlImagen);
+      setImageUrlSecondary(currentProduct.urlImagenSecundaria);
     }
 
   }, [currentProduct, setCurrentProduct, setFormData, fileSecondary]);
@@ -294,7 +291,7 @@ export const ProductForm = () => {
               {/* Segunda columna*/}
               <div className="col-xxl-6 col-xl-6 col-lg-6">
                 <div className="d-xxl-flex d-xl-flex d-lg-flex d-md-flex d-grid justify-content-around">
-                  {!imagePrimary && (
+                  {(!imagePrimary && !imageUrlPrimary) && (
                     <div className="m-3 d-flex justify-content-center">
                       <label
                         className="d-flex flex-column gap-4 align-items-center justify-content-center p-3 rounded-4"
@@ -325,7 +322,7 @@ export const ProductForm = () => {
                     </div>
                   )}
 
-                  {imagePrimary && (
+                  {(imagePrimary || imageUrlPrimary) && (
                     <div className="m-3 d-flex justify-content-center">
                       <label
                         className="d-flex flex-column gap-4 align-items-center justify-content-center p-3 rounded-4"
@@ -338,11 +335,22 @@ export const ProductForm = () => {
                         htmlFor="viewImg"
                       >
                         <div className="d-flex flex-column justify-content-between align-items-center h-100">
-                          <img
-                            className="w-50 img-fluid"
-                            src={URL.createObjectURL(imagePrimary)}
-                            alt="img"
-                          />
+                          {imagePrimary && (
+                            <img
+                              className="w-50 img-fluid"
+                              src={URL.createObjectURL(imagePrimary)}
+                              alt="img"
+                            />
+                          )}
+
+                          {imageUrlPrimary && (
+                            <img
+                              className="w-50 img-fluid"
+                              src={imageUrlPrimary}
+                              alt="img"
+                            />
+                          )}
+
                           <button
                             onClick={handleRemoveImagePrimary}
                             className="btn btn-danger mt-3"
@@ -354,7 +362,7 @@ export const ProductForm = () => {
                     </div>
                   )}
 
-                  {!imageSecondary && (
+                  {(!imageSecondary && !imageUrlSecondary) && (
                     <div className="m-3 d-flex flex-column justify-content-center align-items-center">
                       <label
                         className="d-flex flex-column gap-4 align-items-center justify-content-center p-3 rounded-4"
@@ -395,7 +403,7 @@ export const ProductForm = () => {
                     </div>
                   )}
 
-                  {imageSecondary && (
+                  {(imageSecondary || imageUrlSecondary) && (
                     <div className="m-3 d-flex flex-column justify-content-center align-items-center">
                       <label
                         className="d-flex flex-column gap-4 align-items-center justify-content-center p-3 rounded-4"
@@ -408,11 +416,24 @@ export const ProductForm = () => {
                         htmlFor="viewimg2"
                       >
                         <div className="d-flex flex-column justify-content-between align-items-center h-100">
-                          <img
-                            className="h-50 img-fluid"
-                            src={URL.createObjectURL(imageSecondary)}
-                            alt="img"
-                          />
+                          {
+                            imageSecondary && (
+                              <img
+                                className="w-50 img-fluid"
+                                src={URL.createObjectURL(imageSecondary)}
+                                alt="img"
+                              />
+                            )
+                          }
+                          {
+                            imageUrlSecondary && (
+                              <img
+                                className="w-50 img-fluid"
+                                src={imageUrlSecondary}
+                                alt="img"
+                              />
+                            )
+                          }
                           <button
                             onClick={handleRemoveImageSecondary}
                             className="btn btn-danger mt-3"
