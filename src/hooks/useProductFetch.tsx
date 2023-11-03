@@ -10,10 +10,22 @@ export const useProductFetch = () => {
   const fetchProducts = async () => {
     try {
       const querySnapshot = await getDocs(collection(db, "productos"));
-      const newData = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
+      const newData = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          nombreProducto: data.nombreProducto,
+          categoriaProducto: data.categoriaProducto,
+          subcategoriaProducto: data.subcategoriaProducto,
+          descripcionProducto: data.descripcionProducto,
+          marcaProducto: data.marcaProducto,
+          imageName: data.imageName,
+          imageNameSecondary: data.imageNameSecondary,
+          pdfName: data.pdfName,
+          urlImagen: data.urlImagen,
+          urlImagenSecundaria: data.urlImagenSecundaria,
+        };
+      });
     
       setProductos(newData);
  

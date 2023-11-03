@@ -70,7 +70,7 @@ export const ProductTable = () => {
                   </th>
                   <th scope="col">Categoria</th>
                   <th className="d-none d-xxl-table-cell" scope="col">
-                    Sub categoría
+                    Sub Categoría
                   </th>
                   <th scope="col">Borrar</th>
                 </tr>
