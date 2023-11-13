@@ -47,7 +47,7 @@ export const AdminForm = () => {
       <div className="form-peice">
         <form onSubmit={handleAdminLogin}>
           <div className="d-flex justify-content-center">
-            <img className="img-fluid pb-2 h-25 w-75" src="src\assets\logo.png" alt="Logo Ingemeco img"/>
+            <img className="img-fluid pb-2 h-25 w-75" src="src\assets\logo.png" alt="Logo Ingemeco img" loading="lazy"/>
           </div>
 
           <div className="form__group field my-3">

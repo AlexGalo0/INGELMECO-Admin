@@ -12,6 +12,7 @@ export const FormProductsAdmin = () => {
             src="../src/assets/logo.png"
             alt="Logo Ingelmeco img"
             style={{ width: "170px" }}
+            loading="lazy"
           />
         </button>
       </div>

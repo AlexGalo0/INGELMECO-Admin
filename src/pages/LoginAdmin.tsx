@@ -13,6 +13,7 @@ export const LoginAdmin = () => {
                   className="w-75 pb-lg-5 pb-xl-5 pb-md-3 pb-sm-2 pb-2 img-fluid"
                   src="src\assets\undraw_forgot_password_re_hxwm.svg.svg"
                   alt="inicio sesión img"
+                  loading="lazy"
                 />
                 <h2 className="">Inicio de sesión</h2>
               </div>
