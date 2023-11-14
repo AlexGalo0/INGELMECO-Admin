@@ -9,7 +9,7 @@ export const FormProductsAdmin = () => {
         <button className="bg-transparent border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
           <img
             className="img-fluid"
-            src="../public/assets/logo.png"
+            src="../src/assets/logo.png"
             alt="Logo Ingelmeco img"
             style={{ width: "170px" }}
             loading="lazy"
