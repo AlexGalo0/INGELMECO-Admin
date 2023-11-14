@@ -2,6 +2,10 @@ import { useProductForm } from "../hooks/useProductForm";
 import { useState, useRef, useEffect } from "react";
 import { Alerts } from "../Components/Alerts.tsx";
 import { useAuth } from "../context/AuthContext.tsx"
+import { collection, deleteDoc, doc } from "firebase/firestore";
+import { deleteObject, ref } from "firebase/storage";
+import { db, storage } from "../config/firebase.ts";
+import { useNavigate } from 'react-router-dom';
 
 export const ProductForm = () => {
 
@@ -9,6 +13,7 @@ export const ProductForm = () => {
   const secondaryFileInputRef = useRef<HTMLInputElement | null>(null);
   const pdfInputRef = useRef<HTMLInputElement | null>(null); // Referencia al input de PDF
   const { currentProduct, setCurrentProduct } = useAuth();
+  const navigate = useNavigate();
 
   const {
     formData,
@@ -33,6 +38,8 @@ export const ProductForm = () => {
   const [imageSecondary, setImageSecondary] = useState<File | null>(null);
   const [imageUrlPrimary, setImageUrlPrimary] = useState<string | null>(null);
   const [imageUrlSecondary, setImageUrlSecondary] = useState<string | null>(null);
+
+  const [mode, setMode] = useState<"add" | "edit">("add");
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -128,11 +135,36 @@ export const ProductForm = () => {
     handleRemoveImageSecondary();
   }
 
+  const handleDelete = async (
+    id: string,
+    imageName: string,
+    imageSecondaryName: string,
+    pdfName: string
+  ) => {
+    try {
+      // Elimina el documento de Firestore por su ID
+      await deleteDoc(doc(collection(db, "productos"), id));
+      // Elimina la imagen del storage
+      await deleteObject(ref(storage, `productos/${imageName}`));
+      if (imageSecondaryName) {
+        await deleteObject(ref(storage, `productos/${imageSecondaryName}`));
+      }
+      if (pdfName) {
+        await deleteObject(ref(storage, `pdfs/${pdfName}`));
+      }
+    } catch (error) {
+      console.error("Error al borrar el producto:", error);
+    } finally {
+      navigate("/admin/products");
+    }
+  };
+
   useEffect(() => {
     (!currentProduct) ? setCurrentProduct(null) : setFormData(currentProduct);
     if (currentProduct && (currentProduct.imageName || currentProduct.imageNameSecondary)) {
       setImageUrlPrimary(currentProduct.urlImagen);
       setImageUrlSecondary(currentProduct.urlImagenSecundaria);
+      setMode("edit");
     }
   }, [currentProduct, setCurrentProduct, setFormData, fileSecondary]);
 
@@ -470,23 +502,32 @@ export const ProductForm = () => {
           </div>
 
           <div className={`mt-xxl-5 mt-xl-5 mt-lg-5 mt-md-4 mt-sm-2 mt-3 d-flex justify-content-around align-items-center ${uploadMessage ? "d-none" : ""}`}>
-            <button
-              // onClick={() =>
-              //   handleDelete(
-              //     producto.id,
-              //     producto.imageName,
-              //     producto.imageNameSecondary,
-              //     producto.pdfName
-              //   )
-              // }
-              id="bottone5"
-              className=" justify-content-around"
-            >
-              Borrar
-            </button>
-            <button id="bottone5" type="submit" disabled={isUploading}>
-              {isUploading ? "Subiendo..." : "Agregar Producto"}
-            </button>
+            {
+              mode === "edit" && (
+                <button
+                  onClick={() =>
+                    handleDelete(
+                      currentProduct?.id ?? "",
+                      currentProduct?.imageName ?? "",
+                      currentProduct?.imageNameSecondary ?? "",
+                      currentProduct?.pdfName ?? ""
+                    )
+                  }
+                  id="bottone5"
+                  className=" justify-content-around"
+                >
+                  Borrar
+                </button>
+              )
+            }
+
+            {
+              mode !== "edit" && (
+                <button id="bottone5" type="submit" disabled={isUploading}>
+                  {isUploading ? "Subiendo..." : "Agregar Producto"}
+                </button>
+              )
+            }
           </div>
 
           {uploadMessage && (

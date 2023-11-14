@@ -1,39 +1,40 @@
 import { useProductFetch } from "../hooks/useProductFetch";
-import { collection, deleteDoc, doc } from "firebase/firestore";
-import { db, storage } from "../config/firebase.ts";
-import { deleteObject, ref } from "firebase/storage";
+// import { collection, deleteDoc, doc } from "firebase/firestore";
+// import { db, storage } from "../config/firebase.ts";
+// import { deleteObject, ref } from "firebase/storage";
 import { useAuth } from "../context/AuthContext.tsx";
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from "react";
 
 export const ProductTable = () => {
 
-  const { productos, loading, fetchProducts } = useProductFetch();
+  const { productos, loading, } = useProductFetch(); // fetchProducts
   const navigate = useNavigate();
   const { setCurrentProduct } = useAuth();
 
-  const handleDelete = async (
-    id: string,
-    imageName: string,
-    imageSecondaryName: string,
-    pdfName: string
-  ) => {
-    try {
-      // Elimina el documento de Firestore por su ID
-      await deleteDoc(doc(collection(db, "productos"), id));
-      // Elimina la imagen del storage
-      await deleteObject(ref(storage, `productos/${imageName}`));
-      if (imageSecondaryName) {
-        await deleteObject(ref(storage, `productos/${imageSecondaryName}`));
-      }
-      if (pdfName) {
-        await deleteObject(ref(storage, `pdfs/${pdfName}`));
-      }
-    } catch (error) {
-      console.error("Error al borrar el producto:", error);
-    } finally {
-      fetchProducts();
-    }
-  };
+  // const handleDelete = async (
+  //   id: string,
+  //   imageName: string,
+  //   imageSecondaryName: string,
+  //   pdfName: string
+  // ) => {
+  //   try {
+  //     // Elimina el documento de Firestore por su ID
+  //     await deleteDoc(doc(collection(db, "productos"), id));
+  //     // Elimina la imagen del storage
+  //     await deleteObject(ref(storage, `productos/${imageName}`));
+  //     if (imageSecondaryName) {
+  //       await deleteObject(ref(storage, `productos/${imageSecondaryName}`));
+  //     }
+  //     if (pdfName) {
+  //       await deleteObject(ref(storage, `pdfs/${pdfName}`));
+  //     }
+  //   } catch (error) {
+  //     console.error("Error al borrar el producto:", error);
+  //   } finally {
+  //     fetchProducts();
+  //   }
+  // };
 
   const handleEdit = (e: React.MouseEvent<HTMLTableRowElement, MouseEvent>, id: string) => {
     e.preventDefault();
@@ -46,6 +47,10 @@ export const ProductTable = () => {
       }, 500);
     }
   }
+
+  useEffect(() => {
+    setCurrentProduct(null);
+  }, [setCurrentProduct]);
 
   return (
     <>
@@ -72,7 +77,7 @@ export const ProductTable = () => {
                   <th className="d-none d-xxl-table-cell" scope="col">
                     Sub Categoría
                   </th>
-                  <th scope="col">Borrar</th>
+                  {/* <th scope="col">Borrar</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -99,7 +104,7 @@ export const ProductTable = () => {
                         : producto.subcategoriaProducto}
                     </td>
                     {/*boton borrar*/}
-                    <td className="text-center">
+                    {/* <td className="text-center">
                       <button
                         onClick={() =>
                           handleDelete(
@@ -117,7 +122,7 @@ export const ProductTable = () => {
                       >
                         Borrar
                       </button>
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>
