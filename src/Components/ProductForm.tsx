@@ -296,7 +296,7 @@ export const ProductForm = () => {
                         htmlFor="inputGroupFile"
                       >
                         <div className="d-flex flex-column align-items-center justify-content-center">
-                          <img className="h-50 img-fluid" src="../src/assets/img.png" alt="img" />
+                          <img className="h-50 img-fluid" src="/assets/img.png" alt="img" />
                           <span style={{ fontWeight: "400", color: "#FFF" }}>
                             Click para subir imagen
                           </span>
@@ -374,7 +374,7 @@ export const ProductForm = () => {
                         <div className="d-flex flex-column align-items-center justify-content-center">
                           <img
                             className="h-50 img-fluid "
-                            src="../src/assets/img.png"
+                            src="/assets/img.png"
                             alt="img"
                           />
                           <span style={{ fontWeight: "400", color: "#FFF" }}>

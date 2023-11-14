@@ -4,15 +4,15 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBTCLkNBXmX9ibA7_ndC7R0h77RKXRZfyU",
-  authDomain: "test-admin-app-1cb81.firebaseapp.com",
-  projectId: "test-admin-app-1cb81",
-  storageBucket: "test-admin-app-1cb81.appspot.com",
-  messagingSenderId: "832034090698",
-  appId: "1:832034090698:web:974505253806289bdb8e33",
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  projectId: process.env.PROJECT_ID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId: process.env.SENDER_ID,
+  appId: process.env.APP_ID
 };
 
-// Initialize Firebase
+
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
