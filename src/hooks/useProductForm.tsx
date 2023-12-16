@@ -114,7 +114,7 @@ export const useProductForm = (
         const productData = {
           nombreProducto: formData.nombreProducto,
           categoriaProducto: formData.categoriaProducto,
-          subcategoriaProducto: formData.subcategoriaProducto,
+          subcategoriaProducto: formData.subcategoriaProducto || "",
           descripcionProducto: formData.descripcionProducto,
           urlImagen: downloadURL,
           marcaProducto: formData.marcaProducto,
@@ -135,6 +135,7 @@ export const useProductForm = (
         }
 
         // Manejar el archivo PDF si existe
+        console.log("pdfFile", pdfFile);
         if (pdfFile) {
           const pdfDownloadURL = await uploadPdfToStorage(pdfFile);
           productData.urlPdf = pdfDownloadURL;
