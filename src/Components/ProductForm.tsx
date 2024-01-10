@@ -2,7 +2,7 @@ import { useProductForm } from "../hooks/useProductForm";
 import { useState, useRef, useEffect } from "react";
 import { Alerts } from "../Components/Alerts.tsx";
 import { useAuth } from "../context/AuthContext.tsx"
-import { collection, deleteDoc, doc } from "firebase/firestore";
+import { collection, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import { db, storage } from "../config/firebase.ts";
 import { useNavigate } from 'react-router-dom';
@@ -158,6 +158,32 @@ export const ProductForm = () => {
             navigate("/admin/products");
         }
     };
+
+    const handleEdit = async (
+        id: string,
+        imageName: string,
+        imageSecondaryName: string,
+        pdfName: string
+    ) => {
+        try {
+            await updateDoc(doc(db, "productos", id), {
+                nombreProducto: formData.nombreProducto,
+                categoriaProducto: formData.categoriaProducto,
+                subcategoriaProducto: formData.subcategoriaProducto || "",
+                descripcionProducto: formData.descripcionProducto,
+                marcaProducto: formData.marcaProducto,
+                imageName: imageName,
+                imageNameSecondary: imageSecondaryName,
+                pdfName: pdfName,
+            });
+
+
+        } catch (error) {
+            console.error("Error al actualizar el producto:", error);
+        } finally {
+            navigate("/admin/products");
+        }
+    }
 
     useEffect(() => {
         (!currentProduct) ? setCurrentProduct(null) : setFormData(currentProduct);
@@ -493,20 +519,36 @@ export const ProductForm = () => {
                     <div className={`mt-xxl-5 mt-xl-5 mt-lg-5 mt-md-4 mt-sm-2 mt-3 d-flex justify-content-around align-items-center ${uploadMessage ? "d-none" : ""}`}>
                         {
                             mode === "edit" && (
-                                <button
-                                    onClick={() =>
-                                        handleDelete(
-                                            currentProduct?.id ?? "",
-                                            currentProduct?.imageName ?? "",
-                                            currentProduct?.imageNameSecondary ?? "",
-                                            currentProduct?.pdfName ?? ""
-                                        )
-                                    }
-                                    id="bottone5"
-                                    className=" justify-content-around"
-                                >
-                                    Borrar
-                                </button>
+                                <>
+                                    <button
+                                        onClick={() =>
+                                            handleEdit(
+                                                currentProduct?.id ?? "",
+                                                currentProduct?.imageName ?? "",
+                                                currentProduct?.imageNameSecondary ?? "",
+                                                currentProduct?.pdfName ?? ""
+                                            )
+                                        }
+                                        id="bottone5"
+                                        className="justify-content-around"
+                                    >
+                                        Actualizar
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleDelete(
+                                                currentProduct?.id ?? "",
+                                                currentProduct?.imageName ?? "",
+                                                currentProduct?.imageNameSecondary ?? "",
+                                                currentProduct?.pdfName ?? ""
+                                            )
+                                        }
+                                        id="bottone5"
+                                        className="justify-content-around"
+                                    >
+                                        Borrar
+                                    </button>
+                                </>
                             )
                         }
 
